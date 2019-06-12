@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style>
+        .chart {
+            width: 600px; height: 400px;
+			box-sizing: border-box;
+			border: 1px solid #000;
+        }
+    </style>
+    <script src="./js/tsart.js"></script>
+	<script src="./js/tsart-bar-horizon.js"></script>
+</head>
+<body>
+    <div id="chart-bar-01" class="chart"></div>
+    <script>
+        Tsart.draw("#chart-bar-01", "bar-horizon", {},
+        [
+			 { name: "철수", value: 100, group: "가", color: "#2eccfa" }
+			,{ name: "영희", value: 90, group: "가", color: "#2eccfa" }
+			,{ name: "명훈", value: 82, group: "나" }
+			,{ name: "재훈", value: 50, group: "나" }
+			,{ name: "은혜", value: 94, group: "다" }
+			,{ name: "정석", value: 35, group: "다" }
+			,{ name: "수지", value: 100 }
+			,{ name: "명권", value: 77 }
+			,{ name: "유리", value: 85 }
+			,{ name: "혜선", value: 92 }
+		]);
+    </script>
+	<p>&nbsp;</p>
+	<div id="chart-bar-02" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-bar-02", "bar-horizon", {
+			regions: { header: { h: 50 } },
+			title: {
+				content: "The demonstration of the Bar type chart",
+				font: "bold 24px 'Arial'",
+				fontColor: "#f94592"
+			},
+			axis: {
+				x: {
+					name: "(점수)",
+					// 표시 단계
+					step: 5,
+					// 최댓값
+					maxValue: 100,
+					position: "top"
+				},
+				y: { name: "(학생)" }
+			},
+			item: {
+				areaAlpha: 0.25 
+			}
+		},
+		[
+			 { name: "철수", value: 100, color: "#2eccfa" }
+			,{ name: "영희", value: 90, color: "#2eccfa" }
+			,{ name: "명훈", value: 82  }
+			,{ name: "재훈", value: 50 }
+			,{ name: "은혜", value: 94, visible: false }
+			,{ name: "정석", value: 35 }
+			,{ name: "수지", value: 100 }
+			,{ name: "명권", value: 77 }
+			,{ name: "유리", value: 85 }
+			,{ name: "혜선", value: 92 }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-bar-03" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-bar-03", "bar-horizon", {
+			regions: {
+				left: { w: 75 },
+				right: { w: 75 },
+			},
+			category: {
+				visible: true,
+				position: "left"
+			},
+			axis: { x: { step: 5, maxValue: 100, position: "bottom" } },
+			item: {
+				labelVisible: false,
+				valueVisible: true
+			}
+		},
+		[
+			 { name: "철수", value: 55, color: "#795548" }
+			,{ name: "영희", value: 90, color: "#2eccfa" }
+			,{ name: "명훈", value: 82, color: "#D32F2F"  }
+			,{ name: "재훈", value: 50, color: "#f44336" }
+			,{ name: "은혜", value: 94, color: "#ff4081" }
+			,{ name: "정석", value: 35, color: "#51eda8" }
+			,{ name: "수지", value: 100, color: "#673ab7" }
+			,{ name: "명권", value: 77, color: "#757575" }
+			,{ name: "유리", value: 85, color: "#fbc02d" }
+			,{ name: "혜선", value: 92, color: "#4caf50" }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-bar-04" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-bar-04", "bar-horizon", {
+			axis: {
+				x: { name: "Sales($)", step: 5, marginLeft: 100, marginRight: 75 },
+				y: { name: "Month" },
+				grid: { lineColor: "#7b1fa2" }
+			},
+			item: {
+				groupMerging: true,
+				valueVisible: true
+			}
+		},
+		[
+			 { name: "January-A", value: 18000, color: "#795548", group: "January" }
+			,{ name: "January-B", value: 39000, color: "#fbc02d", group: "January" }
+			,{ name: "January-C", value: 45000, color: "#4caf50", group: "January" }
+			,{ name: "February-A", value: 6000, color: "#795548", group: "February" }
+			,{ name: "February-B", value: 12000, color: "#fbc02d", group: "February" }
+			,{ name: "February-C", value: 20000, color: "#4caf50", group: "February" }
+			,{ name: "March-A", value: 24000, color: "#795548", group: "March" }
+			,{ name: "March-B", value: 56000, color: "#fbc02d", group: "March" }
+			,{ name: "March-C", value: 93000, color: "#4caf50", group: "March" }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-bar-05" class="chart"></div>
+	<button type="button" onclick="draw01();">Animate</button>
+	<button type="button" onclick="clear01();">Clear items</button>
+    <script>
+        let data01 = [
+		     { name: "철수", value: 100, group: "가", color: "#2eccfa" }
+			,{ name: "영희", value: 90, group: "가", color: "#2efffa" }
+			,{ name: "명훈", value: 82, group: "나" }
+			,{ name: "재훈", value: 50, group: "나" }
+			,{ name: "은혜", value: 94, group: "다" }
+			,{ name: "정석", value: 35, group: "다" }
+			,{ name: "수지", value: 100 }
+			,{ name: "명권", value: 77 }
+			,{ name: "유리", value: 85 }
+			,{ name: "혜선", value: 92 }
+		];
+		
+		let graph01 = Tsart.draw("#chart-bar-05", "bar-horizon");
+		
+		function draw01() {
+			if (!graph01) return;
+			function animate(index) {
+				setTimeout(function () {
+					graph01.addItem(data01[index]);
+					graph01.updateClient();
+					index++;
+					if (index < data01.length) animate(index);
+				}, 500, false);
+			}
+			animate(0);
+		}
+
+		function clear01() {
+			if (!graph01) return;
+			graph01.clearItems();
+			graph01.updateClient();
+		}
+    </script>
+
+</body>
+</html>

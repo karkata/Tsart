@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style>
+        .chart {
+            width: 602px; height: 402px;
+			box-sizing: border-box;
+			border: 1px solid #000;
+        }
+    </style>
+    <script src="./js/tsart.js"></script>
+	<script src="./js/tsart-pie-standard.js"></script>
+</head>
+<body>
+    <div id="chart-pie-01" class="chart"></div>
+    <script>
+        Tsart.draw("#chart-pie-01", "pie-standard", {
+		},[
+			 { name: "넥슨", value: 9498 }
+			,{ name: "NC", value: 3588 }
+			,{ name: "펄어비스", value: 1308 }
+			,{ name: "컴투스", value: 1077 }
+			,{ name: "카카오", value: 940 } 
+			,{ name: "네오위즈", value: 615 }
+			,{ name: "웹젠", value: 414 }
+			,{ name: "게임빌", value: 287 }
+			,{ name: "위메이드", value: 267 }
+			,{ name: "선데이로즈", value: 201 }
+			,{ name: "조이맥스", value: 72 }
+		]);
+    </script>
+	<p>&nbsp;</p>
+	<div id="chart-pie-02" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-pie-02", "pie-standard", {
+			regions: { 
+				header: { h: 50 }, 
+				client: { bkcolor: "#eee" }
+			},
+			title: {
+				content: "Sales of Game Companies in Q1, 2019",
+				font: "normal 18px 'Arial'",
+				fontColor: "#f94592"
+			},
+			pie: {
+				gapWidth: 5
+			}
+		},
+		[
+			 { name: "넥슨", value: 9498 }
+			,{ name: "NC", value: 3588 }
+			,{ name: "펄어비스", value: 1308 , highlight: true }
+			,{ name: "컴투스", value: 1077 }
+			,{ name: "카카오", value: 940 } 
+			,{ name: "네오위즈", value: 615 }
+			,{ name: "웹젠", value: 414 }
+			,{ name: "게임빌", value: 287, visible: false }
+			,{ name: "위메이드", value: 267 , visible: false }
+			,{ name: "선데이로즈", value: 201 , visible: false }
+			,{ name: "조이맥스", value: 72 }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-pie-03" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-pie-03", "pie-standard", {
+			regions: {
+				left: { w: 100 }
+			},
+			category: {
+				visible: true,
+				// 범례 위치를 지정한다. left, right
+				position: "left"
+			},
+			pie: { pieRadius: "80%", holeRadius: "30%" },
+			item: {
+				labelVisible: false,
+				valueVisible: true
+			}
+		},
+		[
+			 { name: "넥슨", value: 9498 }
+			,{ name: "NC", value: 3588 }
+			,{ name: "펄어비스", value: 1308 , highlight: true }
+			,{ name: "컴투스", value: 1077 }
+			,{ name: "카카오", value: 940 } 
+			,{ name: "네오위즈", value: 615 }
+			,{ name: "웹젠", value: 414 }
+			,{ name: "게임빌", value: 287 }
+			,{ name: "위메이드", value: 267 }
+			,{ name: "선데이로즈", value: 201 }
+			,{ name: "조이맥스", value: 72 }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-pie-04" class="chart"></div>
+	<script>
+		window.addEventListener("load", function () {
+			Tsart.draw("#chart-pie-04", "pie-standard", {
+				pie: {
+					holeRadius: "50%"
+				},
+				item: {
+					fontColor: "#fff",
+					textDisplayType: "over",
+					valueVisible: false
+				}
+			},
+			[
+				 { name: "넥슨", value: 9498 }
+				,{ name: "NC", value: 3588 }
+				,{ name: "펄어비스", value: 1308 , highlight: true }
+				,{ name: "컴투스", value: 1077 }
+				,{ name: "카카오", value: 940 } 
+				,{ name: "네오위즈", value: 615 }
+				,{ name: "웹젠", value: 414 }
+				,{ name: "게임빌", value: 287, visible: false }
+				,{ name: "위메이드", value: 267, visible: false }
+				,{ name: "선데이로즈", value: 201, visible: false }
+				,{ name: "조이맥스", value: 72 }
+			]);
+		}, false);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-pie-05" class="chart"></div>
+	<button type="button" onclick="draw01();">Animate</button>
+	<button type="button" onclick="clear01();">Clear items</button>
+    <script>
+        let data01 = [
+			 { name: "넥슨", value: 9498 }
+			,{ name: "NC", value: 3588 }
+			,{ name: "펄어비스", value: 1308 , highlight: true }
+			,{ name: "컴투스", value: 1077 }
+			,{ name: "카카오", value: 940 } 
+			,{ name: "네오위즈", value: 615 }
+			,{ name: "웹젠", value: 414 }
+			,{ name: "게임빌", value: 287, visible: false }
+			,{ name: "위메이드", value: 267, visible: false }
+			,{ name: "선데이로즈", value: 201, visible: false }
+			,{ name: "조이맥스", value: 72 }
+		];
+		
+		let graph01 = Tsart.draw("#chart-pie-05", "pie-standard");
+		
+		function draw01() {
+			if (!graph01) return;
+			function animate(index) {
+				setTimeout(function () {
+					graph01.addItem(data01[index]);
+					graph01.updateClient();
+					index++;
+					if (index < data01.length) animate(index);
+				}, 500, false);
+			}
+			animate(0);
+		}
+
+		function clear01() {
+			if (!graph01) return;
+			graph01.clear();
+			graph01.updateClient();
+		}
+    </script>
+
+</body>
+</html>

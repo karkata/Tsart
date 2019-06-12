@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+	<script src="../../js/tsart.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <script>
+
+		const hex = "#a4bbcc";
+		//const hex = "#3bc";
+
+		let re = null;
+		let match = null;
+		let c = null;
+		if (hex.length > 4) {
+			re = new RegExp("^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$", "i");
+			if (re.test(hex)) {
+				match = re.exec(hex);
+				//c = new Color(parseInt(match[1], 16), parseInt(match[2], 16), parseInt(match[3], 16));
+			}
+		} else {
+			re = new RegExp("^#([0-9a-f]{1})([0-9a-f]{1})([0-9a-f]{1})$", "i");
+			if (re.test(hex)) {
+				match = re.exec(hex);
+				// match[1] + match[1] * 16 = match[1] * 17
+				//c = new Color(parseInt(match[1], 16) * 17, parseInt(match[2], 16) * 17, parseInt(match[3], 16) * 17);
+			}
+		}
+
+		//console.log(c.toHexString(true));
+
+		let color = Tsart.Color.parseColor(hex);
+		console.log(color.toHexString(true));
+    </script>
+
+</body>
+</html>

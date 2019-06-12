@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <style>
+        .chart {
+            width: 600px; height: 400px;
+			box-sizing: border-box;
+			border: 1px solid #000;
+        }
+    </style>
+    <script src="./js/tsart.js"></script>
+	<script src="./js/tsart-line-area.js"></script>
+</head>
+<body>
+    <div id="chart-line-01" class="chart"></div>
+    <script>
+        Tsart.draw("#chart-line-01", "line-area", {},[
+			 { group: "철수", color: "#03a9f4", name: "1월", value: 100 }
+			,{ group: "철수", color: "#03a9f4", name: "2월", value: 55 }
+			,{ group: "철수", color: "#03a9f4", name: "3월", value: 82 }
+			,{ group: "철수", color: "#03a9f4", name: "4월", value: 50 }
+			,{ group: "철수", color: "#03a9f4", name: "5월", value: 50 } 
+			,{ group: "영희", color: "#1976d2", name: "1월", value: 94 }
+			,{ group: "영희", color: "#1976d2", name: "2월", value: 35 }
+			,{ group: "영희", color: "#1976d2", name: "3월", value: 70 }
+			,{ group: "영희", color: "#1976d2", name: "4월", value: 45 }
+			,{ group: "영희", color: "#1976d2", name: "5월", value: 23 }
+		]);
+    </script>
+	<p>&nbsp;</p>
+	<div id="chart-line-02" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-line-02", "line-area", {
+			regions: { header: { h: 50 } },
+			title: {
+				content: "The demonstration of the line chart",
+				font: "bold 24px 'Arial'",
+				fontColor: "#f94592"
+			},
+			axis: {
+				x: { name: "(월)" },
+				y: {
+					name: "(점수)",
+					// 표시 단계
+					step: 5,
+					// 최댓값
+					maxValue: 100
+				},
+				grid: { visible: false }
+			},
+			item: {
+				spotVisible: false
+			}
+		},
+		[
+			 { group: "철수", color: "#ff5722", name: "1월", value: 100 }
+			,{ group: "철수", color: "#ff5722", name: "2월", value: 55 }
+			,{ group: "철수", color: "#ff5722", name: "3월", value: 82 }
+			,{ group: "철수", color: "#ff5722", name: "4월", value: 50 }
+			,{ group: "철수", color: "#ff5722", name: "5월", value: 50 } 
+			,{ group: "영희", color: "#ff9800", name: "1월", value: 94 }
+			,{ group: "영희", color: "#ff9800", name: "2월", value: 35 }
+			,{ group: "영희", color: "#ff9800", name: "3월", value: 70 }
+			,{ group: "영희", color: "#ff9800", name: "4월", value: 45 }
+			,{ group: "영희", color: "#ff9800", name: "5월", value: 23 }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-line-03" class="chart"></div>
+	<script>
+		Tsart.draw("#chart-line-03", "line-area", {
+			regions: {
+				left: { w: 75 },
+				right: { w: 75 },
+			},
+			category: {
+				visible: true,
+				// 범례 위치를 지정한다. left, right
+				position: "left"
+			},
+			axis: { y: { step: 5, maxValue: 100, position: "right" } },
+			item: {
+				labelVisible: false,
+				valueVisible: true
+			}
+		},
+		[
+			 { group: "철수", color: "#ff5722", name: "1월", value: 100 }
+			,{ group: "철수", color: "#ff5722", name: "2월", value: 55 }
+			,{ group: "철수", color: "#ff5722", name: "3월", value: 82 }
+			,{ group: "철수", color: "#ff5722", name: "4월", value: 50 }
+			,{ group: "철수", color: "#ff5722", name: "5월", value: 50 } 
+			,{ group: "영희", color: "#ff9800", name: "1월", value: 94 }
+			,{ group: "영희", color: "#ff9800", name: "2월", value: 35 }
+			,{ group: "영희", color: "#ff9800", name: "3월", value: 70 }
+			,{ group: "영희", color: "#ff9800", name: "4월", value: 45 }
+			,{ group: "영희", color: "#ff9800", name: "5월", value: 23 }
+		]);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-line-04" class="chart"></div>
+	<script>
+		window.addEventListener("load", function () {
+			Tsart.draw("#chart-line-04", "line-area", {
+				axis: {
+					x: { name: "Month" },
+					y: { name: "Score", step: 10 },
+					grid: { yLineColor: "#eee" }
+				},
+				item: {
+					valueVisible: false
+				}
+			},
+			[
+				 { group: "철수", color: "#ff5722", name: "1월", value: 100 }
+				,{ group: "철수", color: "#ff5722", name: "2월", value: 55 }
+				,{ group: "철수", color: "#ff5722", name: "3월", value: 82 }
+				,{ group: "철수", color: "#ff5722", name: "4월", value: 50 }
+				,{ group: "철수", color: "#ff5722", name: "5월", value: 50 } 
+				,{ group: "영희", color: "#ff9800", name: "1월", value: 94 }
+				,{ group: "영희", color: "#ff9800", name: "2월", value: 35 }
+				,{ group: "영희", color: "#ff9800", name: "3월", value: 70 }
+				,{ group: "영희", color: "#ff9800", name: "4월", value: 45 }
+				,{ group: "영희", color: "#ff9800", name: "5월", value: 23 }
+			]);
+		}, false);
+	</script>
+	<p>&nbsp;</p>
+	<div id="chart-line-05" class="chart"></div>
+	<button type="button" onclick="draw01();">Animate</button>
+	<button type="button" onclick="clear01();">Clear items</button>
+    <script>
+        let data01 = [
+			 { group: "철수", color: "#ff5722", name: "1월", value: 100 }
+			,{ group: "철수", color: "#ff5722", name: "2월", value: 55 }
+			,{ group: "철수", color: "#ff5722", name: "3월", value: 82 }
+			,{ group: "철수", color: "#ff5722", name: "4월", value: 50 }
+			,{ group: "철수", color: "#ff5722", name: "5월", value: 50 } 
+			,{ group: "영희", color: "#ff9800", name: "1월", value: 94 }
+			,{ group: "영희", color: "#ff9800", name: "2월", value: 35 }
+			,{ group: "영희", color: "#ff9800", name: "3월", value: 70 }
+			,{ group: "영희", color: "#ff9800", name: "4월", value: 45 }
+			,{ group: "영희", color: "#ff9800", name: "5월", value: 23 }
+		];
+		
+		let graph01 = Tsart.draw("#chart-line-05", "line-area");
+		
+		function draw01() {
+			if (!graph01) return;
+			function animate(index) {
+				setTimeout(function () {
+					graph01.addItem(data01[index]);
+					graph01.updateClient();
+					index++;
+					if (index < data01.length) animate(index);
+				}, 500, false);
+			}
+			animate(0);
+		}
+
+		function clear01() {
+			if (!graph01) return;
+			graph01.clear();
+			graph01.updateClient();
+		}
+    </script>
+
+</body>
+</html>
