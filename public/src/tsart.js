@@ -1,4 +1,5 @@
-;;const Tsart = (function () {
+/* global Tsart: true */
+const Tsart = (function () {
 	"use strict";
 
 	return {
@@ -275,7 +276,7 @@
 			const drawFunction = Tsart.charts.get(kind);
 			
 			if (container instanceof String) {
-				container = document.querySelector(DVC.refineId(container, true));
+				container = document.querySelector(container);
 				if (!container) throw new Error("Container does not exist.");
 			}
 

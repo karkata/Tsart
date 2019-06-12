@@ -1,4 +1,5 @@
-;;(function () {
+/* global Tsart: true */
+(function () {
 	"use strict";
 	
 	class ItemElement {
@@ -62,7 +63,6 @@
 
 		calculateAll() {
 			for (let i = 0; i < this.data.length; i++) {
-				let t = this.data[i];
 				this.addItem(this.data[i]);
 			}
 		} //:~ calculate method
@@ -339,7 +339,7 @@
 				}
 			}
 
-			for (let i = 0, t = null; i < dim.length; i++) {
+			for (let i = 0; i < dim.length; i++) {
 				if (i === 0) {
 					ctx.strokeStyle = group.color;
 					ctx.lineWidth = 1.5;

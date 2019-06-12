@@ -1,4 +1,5 @@
-;;(function () {
+/* global Tsart: true */
+(function () {
 	"user strict";
 	
 	class GroupElement {
@@ -184,7 +185,6 @@
 		 */
 		updateClient() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const posx = Tsart.Util.toPixel(opt.regions.left.w, this.cv.width);
 			const posy = Tsart.Util.toPixel(opt.regions.header.h, this.cv.height);
@@ -208,7 +208,7 @@
 			let gidx = 0, gyc = 0;
 			let ih = 0, iy = 0, bh = 0;
 			let byc = 0, cbx = 0, obx = 0, barea = null;
-			for (let [name, g] of this.groups) {
+			for (let g of this.groups.values()) {
 				gyc = area.y + (gidx * gh) + (gh / 2);
 				// 항목 높이 
 				ih = (gh * opt.item.groupGapRatio) / (opt.item.groupMerging ? 1 : g.items.length);

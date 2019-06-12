@@ -1,4 +1,5 @@
-;;(function () {
+/* global Tsart: true */
+(function () {
 	"use strict";
 	
 	class ItemElement {
@@ -64,7 +65,6 @@
 
 		calculateAll() {
 			for (let i = 0; i < this.data.length; i++) {
-				let t = this.data[i];
 				this.addGroup(this.data[i]);
 			}
 		} //:~ calculate method
@@ -110,7 +110,7 @@
 		 * @param t An item that is indivisual information for diplaying line chart
 		 */
 		addItem(g, t) {
-			if (typeof g === "String") {
+			if (typeof g === "string") {
 				if (!this.groups.has(g)) {
 					g = new GroupElement(g);
 					this.groups.set(g.name, g);
@@ -228,7 +228,7 @@
 
 			this.updateGrid(ctx, area, opt);
 			
-			for (let [gname, g] of this.groups) {
+			for (let g of this.groups.values()) {
 				this.updateLine(ctx, area, g, opt);
 			}
 		

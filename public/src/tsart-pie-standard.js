@@ -1,4 +1,5 @@
-;;(function () {
+/* global Tsart: true */
+(function () {
 	"use strict";
 	
 	class ItemElement {
