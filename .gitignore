@@ -2,6 +2,7 @@
 .git
 node_modules
 
-# extensions
+# files 
 .DS_Store
 .thumb
+package-lock.json
