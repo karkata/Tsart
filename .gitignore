@@ -1,7 +1,10 @@
-# folders
+# system folders
 .git
 node_modules
 
-# files 
+# system files 
 .DS_Store
 .thumb
+
+# project folders
+public/dist

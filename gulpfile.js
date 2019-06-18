@@ -8,25 +8,30 @@ let paths = {
 	dist: "public/dist"
 };
 
-function build() {
-	return gulp.src(paths.js + "/*.js")
-		.pipe(eslint({ envs: [ "browser" ] }))
-		.pipe(eslint.format())
-		.pipe(eslint.failAfterError())
-		.pipe(terser())
-		.pipe(gulp.dest(paths.dist + "/"));
-}
-
-function test() {
+function syntax(cb) {
 	gulp.src(paths.js + "/*.js")
 		.pipe(eslint({ envs: [ "browser" ] }))
 		.pipe(eslint.format())
-		.pipe(eslint.failAfterError())
-		.pipe(gulp.dest("/www/web/tsart/js/"));
-
-	return gulp.src(paths.example + "/*.html")
-		.pipe(gulp.dest("/www/web/tsart/"));
+		.pipe(eslint.failAfterError());
+	cb();
 }
 
-exports.build = build;
-exports.default = test;
+function minify(cb) {
+	gulp.src(paths.js + "/*.js")
+		.pipe(terser())
+		.pipe(gulp.dest(paths.dist + "/"));
+	cb();
+}
+
+function copySourceForTest(cb) {
+	gulp.src(paths.js + "/*.js").pipe(gulp.dest("/www/web/tsart/js/"));
+	cb();
+}
+
+function copyExampleForTest(cb) {
+	gulp.src(paths.exampel + "/*.html").pipe(gulp.dest("/www/web/tsart/"));
+	cb();
+}
+
+exports.build = gulp.series(syntax, minify);
+exports.default = gulp.series(syntax, copySourceForTest, copyExampleForTest);
