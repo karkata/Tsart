@@ -8,7 +8,7 @@ let paths = {
 	dist: "public/dist"
 };
 
-function buildjs() {
+function build() {
 	return gulp.src(paths.js + "/*.js")
 		.pipe(eslint({ envs: [ "browser" ] }))
 		.pipe(eslint.format())
@@ -28,5 +28,5 @@ function test() {
 		.pipe(gulp.dest("/www/web/tsart/"));
 }
 
-exports.buildjs = buildjs;
+exports.build = build;
 exports.default = test;
