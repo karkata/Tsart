@@ -12,23 +12,36 @@
     </style>
     <script src="./js/tsart.js"></script>
 	<script src="./js/tsart-scatterplot-standard.js"></script>
+	<script>
+		let source = [
+			 { x: 1, y: 25, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 36, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 52, group: "Korea", color: "#A901DB" }
+			,{ x: 2, y: 15, group: "Korea", color: "#A901DB" }
+			,{ x: 3, y: 25, group: "Korea", color: "#A901DB" }
+			,{ x: 3, y: 22, group: "Korea", color: "#A901DB" }
+			,{ x: 4, y: 34, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 67, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 75, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 80, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 15, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 46, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 22, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 65, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 85, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 11, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 67, group: "Japan", color: "#FE2E2E" }
+			,{ x: 4, y: 98, group: "Japan", color: "#FE2E2E" }
+			,{ x: 5, y: 24, group: "Japan", color: "#FE2E2E" }
+			,{ x: 5, y: 72, group: "Japan", color: "#FE2E2E" }
+
+		];
+	</script>
 </head>
 <body>
     <div id="chart-bar-01" class="chart"></div>
     <script>
-        Tsart.draw("#chart-bar-01", "scatterplot-standard", {},
-        [
-			 { name: "철수", value: 100, group: "가", color: "#2eccfa" }
-			,{ name: "영희", value: 90, group: "가", color: "#2eccfa" }
-			,{ name: "명훈", value: 82, group: "나" }
-			,{ name: "재훈", value: 50, group: "나" }
-			,{ name: "은혜", value: 94, group: "다" }
-			,{ name: "정석", value: 35, group: "다" }
-			,{ name: "수지", value: 100 }
-			,{ name: "명권", value: 77 }
-			,{ name: "유리", value: 85 }
-			,{ name: "혜선", value: 92 }
-		]);
+        Tsart.draw("#chart-bar-01", "scatterplot-standard", {}, source);
     </script>
 	<p>&nbsp;</p>
 	<div id="chart-bar-02" class="chart"></div>
@@ -46,27 +59,13 @@
 					// 표시 단계
 					step: 5,
 					// 최댓값
-					maxValue: 100,
-					position: "top"
+					maxValue: 100
 				},
 				y: { name: "(학생)" }
 			},
 			item: {
-				areaAlpha: 0.25 
 			}
-		},
-		[
-			 { name: "철수", value: 100, color: "#2eccfa" }
-			,{ name: "영희", value: 90, color: "#2eccfa" }
-			,{ name: "명훈", value: 82  }
-			,{ name: "재훈", value: 50 }
-			,{ name: "은혜", value: 94, visible: false }
-			,{ name: "정석", value: 35 }
-			,{ name: "수지", value: 100 }
-			,{ name: "명권", value: 77 }
-			,{ name: "유리", value: 85 }
-			,{ name: "혜선", value: 92 }
-		]);
+		}, source);
 	</script>
 	<p>&nbsp;</p>
 	<div id="chart-bar-03" class="chart"></div>
@@ -82,22 +81,8 @@
 			},
 			axis: { x: { step: 5, maxValue: 100, position: "bottom" } },
 			item: {
-				labelVisible: false,
-				valueVisible: true
 			}
-		},
-		[
-			 { name: "철수", value: 55, color: "#795548" }
-			,{ name: "영희", value: 90, color: "#2eccfa" }
-			,{ name: "명훈", value: 82, color: "#D32F2F"  }
-			,{ name: "재훈", value: 50, color: "#f44336" }
-			,{ name: "은혜", value: 94, color: "#ff4081" }
-			,{ name: "정석", value: 35, color: "#51eda8" }
-			,{ name: "수지", value: 100, color: "#673ab7" }
-			,{ name: "명권", value: 77, color: "#757575" }
-			,{ name: "유리", value: 85, color: "#fbc02d" }
-			,{ name: "혜선", value: 92, color: "#4caf50" }
-		]);
+		}, source);
 	</script>
 	<p>&nbsp;</p>
 	<div id="chart-bar-04" class="chart"></div>
@@ -109,41 +94,16 @@
 				grid: { lineColor: "#7b1fa2" }
 			},
 			item: {
-				groupMerging: true,
-				valueVisible: true
 			}
-		},
-		[
-			 { name: "January-A", value: 18000, color: "#795548", group: "January" }
-			,{ name: "January-B", value: 39000, color: "#fbc02d", group: "January" }
-			,{ name: "January-C", value: 45000, color: "#4caf50", group: "January" }
-			,{ name: "February-A", value: 6000, color: "#795548", group: "February" }
-			,{ name: "February-B", value: 12000, color: "#fbc02d", group: "February" }
-			,{ name: "February-C", value: 20000, color: "#4caf50", group: "February" }
-			,{ name: "March-A", value: 24000, color: "#795548", group: "March" }
-			,{ name: "March-B", value: 56000, color: "#fbc02d", group: "March" }
-			,{ name: "March-C", value: 93000, color: "#4caf50", group: "March" }
-		]);
+		}, source);
 	</script>
 	<p>&nbsp;</p>
 	<div id="chart-bar-05" class="chart"></div>
 	<button type="button" onclick="draw01();">Animate</button>
 	<button type="button" onclick="clear01();">Clear items</button>
     <script>
-        let data01 = [
-		     { name: "철수", value: 100, group: "가", color: "#2eccfa" }
-			,{ name: "영희", value: 90, group: "가", color: "#2efffa" }
-			,{ name: "명훈", value: 82, group: "나" }
-			,{ name: "재훈", value: 50, group: "나" }
-			,{ name: "은혜", value: 94, group: "다" }
-			,{ name: "정석", value: 35, group: "다" }
-			,{ name: "수지", value: 100 }
-			,{ name: "명권", value: 77 }
-			,{ name: "유리", value: 85 }
-			,{ name: "혜선", value: 92 }
-		];
-		
-		let graph01 = Tsart.draw("#chart-bar-05", "scatterplot-standard");
+		let data01 = source;
+       	let graph01 = Tsart.draw("#chart-bar-05", "scatterplot-standard");
 		
 		function draw01() {
 			if (!graph01) return;

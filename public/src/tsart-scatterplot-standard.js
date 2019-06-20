@@ -1,10 +1,12 @@
 /* global Tsart: true */
+/* eslint no-console: "warn" */
 (function () {
 	"user strict";
 	
 	class GroupElement {
-		constructor(name) {
+		constructor(name, color) {
 			this.name = name;
+			this.color = color || "#0080FF"; 
 			this.items = [];
 		} //:~ constructor
 
@@ -21,11 +23,9 @@
 	class ItemElement {
 		constructor(i, t) {
 			this.index = i;
-			this.name = t.name;
-			this.value = t.value;
+			this.x = t.x;
+			this.y = t.y;
 			this.group = t.group || "";
-			this.color = t.color || "#0040ff";
-			this.visible = t.visible === false ? false : true;
 		} //:~ constructor
 	} //:~ class ItemElment
 
@@ -37,10 +37,14 @@
 			this.options = options;
 			this.data = data || [];
 			this.groups = new Map();
-			this.minv = Number.MAX_VALUE;
-			this.maxv = Number.MIN_VALUE;
-			this.maxt = 0;
-			this.maxn = "";
+			this.minxv = Number.MAX_VALUE;
+			this.maxxv = Number.MIN_VALUE;
+			this.minyv = Number.MAX_VALUE;
+			this.maxyv = Number.MIN_VALUE;
+			this.minxt = 0;
+			this.minyt = 0;
+			this.maxxt = 0;
+			this.maxyt = 0;
 			this.maxg = "";
 		
 			this.calculateAll();
@@ -53,11 +57,15 @@
 		} //:~ calculate method
 
 		calculateOne(item) {
-			if (this.minv > item.value) this.minv = item.value;
-			if (this.maxv < item.value) this.maxv = item.value;
-			if (this.maxn.length < item.name.length) this.maxn = item.name;
+			if (this.minxv > item.x) this.minxv = item.x;
+			if (this.maxxv < item.x) this.maxxv = item.x;
+			if (this.minyv > item.y) this.minyv = item.y;
+			if (this.maxyv < item.y) this.maxyv = item.y;
 			if (this.maxg.length < item.group.length) this.maxg = item.group;
-			this.maxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxv), this.options.axis.x.maxValue);
+			this.minxt = this.options.axis.x.minValue;
+			this.minyt = this.options.axis.y.minValue;
+			this.maxxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxxv), this.options.axis.x.maxValue);
+			this.maxyt = Math.min(Tsart.Util.getMaxAxisValue(this.maxyv), this.options.axis.y.maxValue);
 		} //:~ calculateOne method
 
 		/**
@@ -67,10 +75,14 @@
 		clearItems() {
 			this.data = [];
 			this.groups = new Map();
-			this.minv = Number.MAX_VALUE;
-			this.maxv = Number.MIN_VALUE;
-			this.maxt = 0;
-			this.maxn = "";
+			this.minxv = Number.MAX_VALUE;
+			this.maxxv = Number.MIN_VALUE;
+			this.minyv = Number.MAX_VALUE;
+			this.maxyv = Number.MIN_VALUE;
+			this.minxt = 0;
+			this.minyt = 0;
+			this.maxxt = 0;
+			this.maxyt = 0;
 			this.maxg = "";
 		} //:~ clearItems method
 
@@ -83,7 +95,7 @@
 			let g = null;
 			if (typeof t.group === "undefined") t.group = "";
 			if (!this.groups.has(t.group)) {
-				g = new GroupElement(t.group);
+				g = new GroupElement(t.group, t.color);
 				this.groups.set(t.group, g);
 			} else {
 				g = this.groups.get(t.group);
@@ -101,7 +113,7 @@
 			this.updateLeft();
 			this.updateRight();
 			this.updateFooter();
-			this.updateClient();
+			//this.updateClient();
 		} //:~ update method
 
 		updateHeader() {
@@ -125,7 +137,6 @@
 
 		updateLeft() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const posx = 0;
 			const posy = Tsart.Util.toPixel(opt.regions.header.h, this.cv.height);
@@ -135,13 +146,12 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "left") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups);
 			}
 		} //:~ updateLeft method
 
 		updateRight() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const w = Tsart.Util.toPixel(opt.regions.right.w, this.cv.width);
 			const posx = this.cv.width - w;
@@ -151,24 +161,34 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "right") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups);
 			}
 		} //:~ updateRight method
 
-		updateCategory(ctx, area, opt, d) {
+		updateCategory(ctx, area, opt, groups) {
 			// 범례 높이, 최대 20pixel을 넘을 수 없다.
-			let ch = Math.min(area.h / d.length, 20);
-			let sy = parseInt((area.h / 2) - (d.length * ch / 2), 10);
+			let ch = Math.min(area.h / groups.size, 20);
+			let sy = parseInt((area.h / 2) - (groups.size * ch / 2), 10);
 			
 			ctx.font = opt.category.font;
 			ctx.textAlign = "start";
 			ctx.textBaseline = "middle";
-			for (let i = 0, t = null; i < d.length; i++) {
-				t = d[i];
-				ctx.fillStyle = t.color;
-				ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+
+			let idx = -1;
+			let pt = { x: 0, y: 0 };
+			for (let [name, g] of groups) {
+				console.log(name);
+				idx++;
+				pt.x = area.x + 15;
+				pt.y = area.y + sy + (ch * idx) + (ch / 2);
+				ctx.fillStyle = g.color;
+				//ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+				ctx.beginPath();
+				ctx.moveTo(pt.x, pt.y)
+				ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
+				ctx.fill();
 				ctx.fillStyle = opt.category.fontColor;
-				ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
+				ctx.fillText(name, area.x + 30, pt.y);
 			}
 		} //:~ updateCategory method
 
@@ -362,7 +382,7 @@
 		st = Tsart.Util.extend({
 			title: { content: "", font: "bold 32px 'Arial'", fontColor: "#999999" },
 			regions: {
-				// 길이는 pixel 또는 %로 지정
+				// The length should be written by pixel or percentage unit.
 				header:	{ h: "0", bkcolor: "#fff" },
 				left:	{ w: "0", bkcolor: "#fff" },
 				right:	{ w: "0", bkcolor: "#fff" },
@@ -371,35 +391,33 @@
 			},
 			category: {
 				visible: false,
-				// 범례 위치: 'left' | 'right'
+				// category position: 'left' | 'right'
 				position: "left",
 				font: "normal 11px 'Arial'",
 				fontColor: "#000"
 			},
 			axis: {
 				x: {
-					// x 축 이름
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
 					marginLeft: 50,
 					marginRight: 50,
 					lineColor: "#aaa",
-					// x 축 간격
 					step: 10,
-					// 값
-					maxValue: Number.MAX_VALUE,
-					// 위치: 'bottom'|'top'
-					position: "bottom"
+					minValue: 0,
+					maxValue: Number.MAX_VALUE
 				},
 				y: {
-					// y 축 이름
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
 					marginTop: 50,
 					marginBottom: 50,
-					lineColor: "#aaa"
+					lineColor: "#aaa",
+					step: 10,
+					minValue: 0,
+					maxValue: Number.MAX_VALUE
 				},
 				grid: {
 					lineColor: "#ddd",
@@ -407,20 +425,11 @@
 				}
 			},
 			item: {
-				// 그룹 간격, 0 ~ 1
-				groupGapRatio: .8,
-				// 항목 간격, 0 ~ 1
-				gapRatio: .8,
-				// 항목 라벨 위치: true | false 
-				labelVisible: true,
-				// 항목 라벨 회전: 'horizon'|'vertical'
-				labelRotate: "horizon",
-				// 항목 값 출력: false | true
-				valueVisible: false,
-				// 값 출력 위치: out | in
-				valuePosition: "out",
-				// 그룹 병합
-				groupMerging: false
+				useBubble: false,
+				// depending on: "x" : "y"
+				bubbleTarget: "x",
+				bubbleMinRadius: 0,
+				bubbleMaxRadius: 10
 			}
 		}, st);
 

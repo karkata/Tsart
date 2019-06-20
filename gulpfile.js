@@ -29,7 +29,7 @@ function copySourceForTest(cb) {
 }
 
 function copyExampleForTest(cb) {
-	gulp.src(paths.exampel + "/*.html").pipe(gulp.dest("/www/web/tsart/"));
+	gulp.src(paths.example + "/*.html").pipe(gulp.dest("/www/web/tsart/"));
 	cb();
 }
 
