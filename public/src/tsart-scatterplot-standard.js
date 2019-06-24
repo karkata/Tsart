@@ -112,7 +112,7 @@
 			this.updateLeft();
 			this.updateRight();
 			this.updateFooter();
-			//this.updateClient();
+			this.updateClient();
 		} //:~ update method
 
 		updateHeader() {
@@ -221,7 +221,7 @@
 
 			this.updateGrid(ctx, area, opt);
 						
-			const gh = area.h / this.groups.size;
+			/*const gh = area.h / this.groups.size;
 			
 			// gidx: 그룹 순서, gyc: 그룹 별 y축 가운데 위치
 			let gidx = 0, gyc = 0;
@@ -246,14 +246,14 @@
 					this.updateBar(ctx, barea, t, i, opt);
 				}
 				gidx++;
-			}
+			}*/
 		} //:~ updateClient method
 
 		updateGrid(ctx, area, opt) {
 			const gap = 10;
 			const pt = { x: 0, y: 0 };
 			// Define the segment of the X axis.
-			const xseg = Tsart.Util.toSegment(area.l, opt.axis.x.position === "bottom" ? area.b : area.t, area.r, opt.axis.x.position === "bottom" ? area.b : area.t);
+			const xseg = Tsart.Util.toSegment(area.l, area.b, area.r, area.b);
 			// Define the segment of the Y axis.
 			const yseg = Tsart.Util.toSegment(area.l, area.t, area.l, area.b);
 
@@ -275,26 +275,24 @@
 				ctx.fillText(opt.axis.x.name, pt.x, pt.y)
 			}
 		
-			let xstep = opt.axis.x.step;
+			let step = opt.axis.x.step;
 			let strStep = "";
 
-			for (let i = 0; i < xstep; i++) {
-				pt.x = xseg.x1 + (xseg.w / xstep * (i + 1));
+			for (let i = 0; i < step; i++) {
+				pt.x = xseg.x1 + (xseg.w / step * (i + 1));
 				pt.y = xseg.y1;
 				ctx.strokeStyle = opt.axis.color;
 				ctx.beginPath();
 				ctx.moveTo(pt.x + 0.5, pt.y + 0.5);
-				ctx.lineTo(pt.x + 0.5, pt.y + (opt.axis.x.position === "bottom" ? (gap * 0.5) : -(gap * 0.5)) + 0.5);
+				ctx.lineTo(pt.x + 0.5, pt.y + (gap * 0.5) + 0.5);
 				ctx.stroke();		
-				strStep = "" + ((this.maxt / xstep) * (i + 1));
+				strStep = "" + (this.minxt + ((this.maxxt - this.minxt) / step) * (i + 1));
 
-				pt.y = opt.axis.x.position === "bottom" ? pt.y + gap : pt.y - gap;
-
-				ctx.font = opt.axis.y.font;
+				ctx.font = opt.axis.x.font;
 				ctx.fillStyle = opt.axis.x.fontColor;
 				ctx.textAlign = "center";
-				ctx.textBaseline = opt.axis.x.position === "bottom" ? "top" : "bottom";
-				ctx.fillText(strStep, pt.x, pt.y)
+				ctx.textBaseline = "top";
+				ctx.fillText(strStep, pt.x, pt.y + gap)
 			
 				if (opt.axis.grid.visible) {
 					ctx.strokeStyle = opt.axis.grid.lineColor;
@@ -314,14 +312,42 @@
 
 			if (opt.axis.y.name) {
 				pt.x = yseg.x1;
-				pt.y = opt.axis.x.position === "bottom" ? yseg.y1 - gap : yseg.y2 + gap;
+				pt.y = yseg.y1 - gap;
 				ctx.font = opt.axis.y.font;
 				ctx.fillStyle = opt.axis.y.fontColor;
 				ctx.textAlign = "center";
-				ctx.textBaseline = opt.axis.x.position === "bottom" ? "bottom" : "top";
+				ctx.textBaseline = "bottom";
 				ctx.fillText(opt.axis.y.name, pt.x, pt.y)
 			}
 
+			step = opt.axis.y.step;
+
+			for (let i = 0; i < step; i++) {
+				pt.x = yseg.x1;
+				pt.y = yseg.y2 - (yseg.h / step * (i + 1));
+				ctx.strokeStyle = opt.axis.color;
+				ctx.beginPath();
+				ctx.moveTo(pt.x + 0.5, pt.y + 0.5);
+				ctx.lineTo(yseg.x1 - (gap * 0.5) + 0.5, pt.y + 0.5);
+				ctx.stroke();		
+				strStep = "" + (this.minyt + ((this.maxyt - this.minyt) / step) * (i + 1));
+
+				pt.x = pt.x - gap;
+
+				ctx.font = opt.axis.y.font;
+				ctx.fillStyle = opt.axis.y.fontColor;
+				ctx.textAlign = "right";
+				ctx.textBaseline = "middle";
+				ctx.fillText(strStep, pt.x, pt.y)
+			
+				if (opt.axis.grid.visible) {
+					ctx.strokeStyle = opt.axis.grid.lineColor;
+					ctx.beginPath();
+					ctx.moveTo(area.l + 0.5, pt.y + 0.5);
+					ctx.lineTo(area.r + 0.5, pt.y + 0.5);
+					ctx.stroke();
+				}
+			}
 		} //:~ updateGrid method
 
 		updateBar(ctx, area, item, index, opt) {
