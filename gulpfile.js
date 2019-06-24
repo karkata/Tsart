@@ -16,6 +16,18 @@ function syntax(cb) {
 	cb();
 }
 
+function syntaxForTest(cb) {
+	gulp.src(paths.js + "/*.js")
+		.pipe(eslint({ 
+			envs: [ "browser" ], 
+			// console 사용된 코드를 무시한다.
+			rules: { "no-console": "off" } 
+		}))
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
+	cb();
+}
+
 function minify(cb) {
 	gulp.src(paths.js + "/*.js")
 		.pipe(terser())
@@ -34,4 +46,4 @@ function copyExampleForTest(cb) {
 }
 
 exports.build = gulp.series(syntax, minify);
-exports.default = gulp.series(syntax, copySourceForTest, copyExampleForTest);
+exports.default = gulp.series(syntaxForTest, copySourceForTest, copyExampleForTest);

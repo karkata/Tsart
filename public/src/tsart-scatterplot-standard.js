@@ -1,5 +1,4 @@
 /* global Tsart: true */
-/* eslint no-console: "warn" */
 (function () {
 	"user strict";
 	
