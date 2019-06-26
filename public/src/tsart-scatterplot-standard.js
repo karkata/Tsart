@@ -181,7 +181,6 @@
 				pt.x = area.x + 15;
 				pt.y = area.y + sy + (ch * idx) + (ch / 2);
 				ctx.fillStyle = g.color;
-				//ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
 				ctx.beginPath();
 				ctx.moveTo(pt.x, pt.y)
 				ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
@@ -220,33 +219,8 @@
 				h - opt.axis.y.marginTop - opt.axis.y.marginBottom);
 
 			this.updateGrid(ctx, area, opt);
+			this.updateScatterplot(ctx, area, opt);
 						
-			/*const gh = area.h / this.groups.size;
-			
-			// gidx: 그룹 순서, gyc: 그룹 별 y축 가운데 위치
-			let gidx = 0, gyc = 0;
-			let ih = 0, iy = 0, bh = 0;
-			let byc = 0, cbx = 0, obx = 0, barea = null;
-			for (let g of this.groups.values()) {
-				gyc = area.y + (gidx * gh) + (gh / 2);
-				// 항목 높이 
-				ih = (gh * opt.item.groupGapRatio) / (opt.item.groupMerging ? 1 : g.items.length);
-				// 첫 항목의 y 축 시작 위치
-				iy = gyc - (gh * opt.item.groupGapRatio / 2);
-				// 여백을 제외한 실제 항목이 그려지는 높이 
-				bh = opt.item.groupMerging ? ih : ih * opt.item.gapRatio;
-				for (let i = 0, t = null; i < g.items.length; i++) {
-					t = g.items[i];
-					if (i === 0) obx = area.x;
-					byc = iy + (opt.item.groupMerging ? 0 : (i * ih)) + (ih / 2);
-					cbx = parseInt(area.x + (t.value * area.w / this.maxt), 10);
-					//barea = Tsart.Util.toDim(bxc - (bw / 2), cby, bw, opt.item.groupMerging ? oby - cby : area.b - cby);
-					barea = Tsart.Util.toDim(obx, byc - (bh / 2), cbx - obx, bh);
-					obx = opt.item.groupMerging? cbx : obx;
-					this.updateBar(ctx, barea, t, i, opt);
-				}
-				gidx++;
-			}*/
 		} //:~ updateClient method
 
 		updateGrid(ctx, area, opt) {
@@ -350,57 +324,27 @@
 			}
 		} //:~ updateGrid method
 
-		updateBar(ctx, area, item, index, opt) {
-			const gapTxt = 10;
-			const valueGap = 5;
+		updateScatterplot(ctx, area, opt) {
 			const pt = { x:0, y:0 };
 
-			ctx.fillStyle = item.color;
-			ctx.fillRect(area.x, area.y, area.w, area.h);
-
-			// 그룹 라벨 출력
-			if (opt.item.groupMerging && index === 0) {
-				pt.x = area.x - gapTxt;
-				pt.y = area.m;
-				ctx.fillStyle = "#000";
-				ctx.textAlign = "right";
-				ctx.textBaseline = "middle";
-				ctx.fillText(item.name, pt.x, pt.y);
-			}
-
-			// 항목 라벨 출력
-			if (opt.item.labelVisible && item.visible) {
-				ctx.fillStyle = opt.item.groupMerging ? "#fff" :  "#000";
-				pt.x = opt.item.groupMerging ? area.c : area.x - gapTxt;
-				pt.y = area.m;
-				
-				// 항목 라벨 회전
-				if (opt.item.labelRotate == "vertical") {
-					ctx.save();
-					ctx.translate(pt.x, pt.y);
-					ctx.rotate(-(Math.PI / 2));
-					ctx.translate(-pt.x, -pt.y);
-					ctx.textAlign = opt.item.groupMerging ? "center" : "right";
-					ctx.textBaseline = "middle";
-					ctx.fillText(item.name, pt.x, pt.y);
-					ctx.restore();
-				} else {
-					ctx.textAlign = opt.item.groupMerging ? "center" : "right";
-					ctx.textBaseline = "middle";
-					ctx.fillText(item.name, pt.x, pt.y);
+			const rangex = this.maxxt - this.minxt;
+			const rangey = this.maxyt - this.minyt;
+			
+			for (let g of this.groups.values()) {
+				ctx.fillStyle = g.color;
+				for (let i = 0, t = null; i < g.items.length; i++) {
+					t = g.items[i];
+					pt.x = area.l + parseInt(area.w * (t.x - this.minxt) / rangex, 10);
+					pt.y = area.b - parseInt(area.h * (t.y - this.minyt) / rangey, 10);
+					ctx.beginPath();
+					ctx.moveTo(pt.x + .5, pt.y + .5);
+					if (opt.item.useBubble) {
+						ctx.arc(pt.x + .5, pt.y + .5, opt.item.size, 0, Math.PI * 2);
+					}  else ctx.arc(pt.x + .5, pt.y + .5, opt.item.size, 0, Math.PI * 2);
+					ctx.fill();
 				}
 			}
-			
-			// 항목 값 출력
-			if (!opt.item.groupMerging && opt.item.valueVisible) {
-				pt.x = opt.item.valuePosition === "in" ? area.r - valueGap : area.r + valueGap;
-				pt.y = area.m + 1;
-				ctx.fillStyle = opt.item.valuePosition === "in" ? "#fff" : item.color;
-				ctx.textAlign = opt.item.valuePosition === "in" ? "right" : "left";
-				ctx.textBaseline = "middle";
-				ctx.fillText(item.value, pt.x, pt.y); 
-			}
-		} //:~ updateBar method
+		} //:~ updateScatterplot method
 	} //:~ class ScatterPlotStandardChart
 	
 	Tsart.charts.set("scatterplot-standard", function (rg, st, d) {       		
@@ -450,6 +394,7 @@
 				}
 			},
 			item: {
+				size: 3,
 				useBubble: false,
 				// depending on: "x" : "y"
 				bubbleTarget: "x",
