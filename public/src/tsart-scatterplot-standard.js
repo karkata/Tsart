@@ -24,6 +24,8 @@
 			this.index = i;
 			this.x = t.x;
 			this.y = t.y;
+            // weight
+            this.w = t.w;
 			this.group = t.group || "";
 		} //:~ constructor
 	} //:~ class ItemElment
@@ -40,6 +42,8 @@
 			this.maxxv = Number.MIN_VALUE;
 			this.minyv = Number.MAX_VALUE;
 			this.maxyv = Number.MIN_VALUE;
+            this.minwv = Number.MAX_VALUE;
+            this.maxwv = Number.MIN_VALUE;
 			this.minxt = 0;
 			this.minyt = 0;
 			this.maxxt = 0;
@@ -60,7 +64,9 @@
 			if (this.maxxv < item.x) this.maxxv = item.x;
 			if (this.minyv > item.y) this.minyv = item.y;
 			if (this.maxyv < item.y) this.maxyv = item.y;
-			if (this.maxg.length < item.group.length) this.maxg = item.group;
+			if (this.minwv > item.w) this.minwv = item.w;
+			if (this.maxwv < item.w) this.maxwv = item.w;
+            if (this.maxg.length < item.group.length) this.maxg = item.group;
 			this.minxt = this.options.axis.x.minValue;
 			this.minyt = this.options.axis.y.minValue;
 			this.maxxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxxv), this.options.axis.x.maxValue);
@@ -78,7 +84,9 @@
 			this.maxxv = Number.MIN_VALUE;
 			this.minyv = Number.MAX_VALUE;
 			this.maxyv = Number.MIN_VALUE;
-			this.minxt = 0;
+			this.minwv = Number.MAX_VALUE;
+            this.maxwv = Number.MIN_VALUE;
+            this.minxt = 0;
 			this.minyt = 0;
 			this.maxxt = 0;
 			this.maxyt = 0;
@@ -270,6 +278,7 @@
 			
 				if (opt.axis.grid.visible) {
 					ctx.strokeStyle = opt.axis.grid.lineColor;
+                    ctx.lineWidth = .5;
 					ctx.beginPath();
 					ctx.moveTo(pt.x + 0.5, area.t + 0.5);
 					ctx.lineTo(pt.x + 0.5, area.b + 0.5);
@@ -300,6 +309,7 @@
 				pt.x = yseg.x1;
 				pt.y = yseg.y2 - (yseg.h / step * (i + 1));
 				ctx.strokeStyle = opt.axis.color;
+                ctx.lineWidth = .5;
 				ctx.beginPath();
 				ctx.moveTo(pt.x + 0.5, pt.y + 0.5);
 				ctx.lineTo(yseg.x1 - (gap * 0.5) + 0.5, pt.y + 0.5);
@@ -326,9 +336,15 @@
 
 		updateScatterplot(ctx, area, opt) {
 			const pt = { x:0, y:0 };
-
-			const rangex = this.maxxt - this.minxt;
-			const rangey = this.maxyt - this.minyt;
+            const rangex = this.maxxt - this.minxt;
+            const rangey = this.maxyt - this.minyt;
+            
+            let vrange = 0, d = 0, srange = 0;
+          
+            if (opt.item.useWeight) { 
+                vrange = this.maxwv - this.minwv;
+                srange = opt.item.bubbleMaxRadius - opt.item.bubbleMinRadius;
+            }
 			
 			for (let g of this.groups.values()) {
 				ctx.fillStyle = g.color;
@@ -337,10 +353,11 @@
 					pt.x = area.l + parseInt(area.w * (t.x - this.minxt) / rangex, 10);
 					pt.y = area.b - parseInt(area.h * (t.y - this.minyt) / rangey, 10);
 					ctx.beginPath();
-					ctx.moveTo(pt.x + .5, pt.y + .5);
-					if (opt.item.useBubble) {
-						ctx.arc(pt.x + .5, pt.y + .5, opt.item.size, 0, Math.PI * 2);
-					}  else ctx.arc(pt.x + .5, pt.y + .5, opt.item.size, 0, Math.PI * 2);
+					ctx.moveTo(pt.x, pt.y);
+					if (opt.item.useWeight && vrange > 0) {
+                        d = t.w - this.minwv;
+						ctx.arc(pt.x, pt.y, srange * d / vrange, 0, Math.PI * 2);
+					}  else ctx.arc(pt.x, pt.y, opt.item.size, 0, Math.PI * 2);
 					ctx.fill();
 				}
 			}
@@ -395,11 +412,9 @@
 			},
 			item: {
 				size: 3,
-				useBubble: false,
-				// depending on: "x" : "y"
-				bubbleTarget: "x",
+				useWeight: false,
 				bubbleMinRadius: 0,
-				bubbleMaxRadius: 10
+				bubbleMaxRadius: 10 
 			}
 		}, st);
 

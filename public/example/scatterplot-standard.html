@@ -14,26 +14,26 @@
 	<script src="./js/tsart-scatterplot-standard.js"></script>
 	<script>
 		let source = [
-			 { x: 1, y: 25, group: "Korea", color: "#A901DB" }
-			,{ x: 1, y: 36, group: "Korea", color: "#A901DB" }
-			,{ x: 1, y: 52, group: "Korea", color: "#A901DB" }
-			,{ x: 2, y: 15, group: "Korea", color: "#A901DB" }
-			,{ x: 3, y: 25, group: "Korea", color: "#A901DB" }
-			,{ x: 3, y: 22, group: "Korea", color: "#A901DB" }
-			,{ x: 4, y: 34, group: "Korea", color: "#A901DB" }
-			,{ x: 5, y: 67, group: "Korea", color: "#A901DB" }
-			,{ x: 5, y: 75, group: "Korea", color: "#A901DB" }
-			,{ x: 5, y: 80, group: "Korea", color: "#A901DB" }
-			,{ x: 1, y: 15, group: "Japan", color: "#FE2E2E" }
-			,{ x: 2, y: 46, group: "Japan", color: "#FE2E2E" }
-			,{ x: 2, y: 22, group: "Japan", color: "#FE2E2E" }
-			,{ x: 2, y: 65, group: "Japan", color: "#FE2E2E" }
-			,{ x: 3, y: 85, group: "Japan", color: "#FE2E2E" }
-			,{ x: 3, y: 11, group: "Japan", color: "#FE2E2E" }
-			,{ x: 3, y: 67, group: "Japan", color: "#FE2E2E" }
-			,{ x: 4, y: 98, group: "Japan", color: "#FE2E2E" }
-			,{ x: 5, y: 24, group: "Japan", color: "#FE2E2E" }
-			,{ x: 5, y: 72, group: "Japan", color: "#FE2E2E" }
+			 { x: 1, y: 25, w: 1, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 36, w: 5, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 52, w: 5, group: "Korea", color: "#A901DB" }
+			,{ x: 2, y: 15, w: 8, group: "Korea", color: "#A901DB" }
+			,{ x: 3, y: 25, w: 4, group: "Korea", color: "#A901DB" }
+			,{ x: 3, y: 22, w: 5, group: "Korea", color: "#A901DB" }
+			,{ x: 4, y: 34, w: 1, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 67, w: 5, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 75, w: 5, group: "Korea", color: "#A901DB" }
+			,{ x: 5, y: 80, w: 6, group: "Korea", color: "#A901DB" }
+			,{ x: 1, y: 15, w: 5, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 46, w: 12, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 22, w: 5, group: "Japan", color: "#FE2E2E" }
+			,{ x: 2, y: 65, w: 5, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 85, w: 5, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 11, w: 3, group: "Japan", color: "#FE2E2E" }
+			,{ x: 3, y: 67, w: 1, group: "Japan", color: "#FE2E2E" }
+			,{ x: 4, y: 98, w: 1, group: "Japan", color: "#FE2E2E" }
+			,{ x: 5, y: 24, w: 2, group: "Japan", color: "#FE2E2E" }
+			,{ x: 5, y: 72, w: 9, group: "Japan", color: "#FE2E2E" }
 
 		];
 	</script>
@@ -89,11 +89,13 @@
 	<script>
 		Tsart.draw("#chart-bar-04", "scatterplot-standard", {
 			axis: {
-				x: { name: "Sales($)", step: 5, marginLeft: 100, marginRight: 75 },
+				x: { name: "Sales($)", step: 5, marginLeft: 35, marginRight: 35 },
 				y: { name: "Month" },
 				grid: { lineColor: "#7b1fa2" }
 			},
 			item: {
+                useWeight: true,
+                bubbleMaxRadius: 20
 			}
 		}, source);
 	</script>
