@@ -13,6 +13,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^5.0.0",
     "gulp-livereload": "^4.0.1",
+    "gulp-strip-debug": "^3.0.0",
     "gulp-terser": "^1.2.0",
     "gulp-uglify": "^3.0.2"
   },

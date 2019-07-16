@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+html, body, iframe { height: 100%; margin: 0; padding: 0; }
+
+html>body {}
+
+body { 
+    width: 100%;
+    font-family: "Malgun Gothic", Tahoma, Verdana, sans-serif;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+ }
+
+.main-container {
+    display: grid;
+    grid-template-columns: auto 600px auto;
+}

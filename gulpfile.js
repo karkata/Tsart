@@ -1,15 +1,18 @@
 const gulp = require("gulp");
 const eslint = require("gulp-eslint");
 const terser = require("gulp-terser");
+const stripdebug = require("gulp-strip-debug");
 
 let paths = {
     js: "public/src",
     example: "public/example",
+    docs: "public/document",
     dist: "public/dist"
 };
 
 function syntax(cb) {
     gulp.src(paths.js + "/*.js")
+        .pipe(stripdebug())
         .pipe(eslint({ envs: [ "browser" ] }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -30,20 +33,28 @@ function syntaxForTest(cb) {
 
 function minify(cb) {
     gulp.src(paths.js + "/*.js")
+        .pipe(stripdebug())
         .pipe(terser())
         .pipe(gulp.dest(paths.dist + "/"));
     cb();
 }
 
 function copySourceForTest(cb) {
-    gulp.src(paths.js + "/*.js").pipe(gulp.dest("/var/www/html/tsart/js/"));
+    gulp.src(paths.js + "/*.js").pipe(gulp.dest("/var/www/html/tsart/example/js/"));
     cb();
 }
 
 function copyExampleForTest(cb) {
-    gulp.src(paths.example + "/*.html").pipe(gulp.dest("/var/www/html/tsart/"));
+    gulp.src(paths.example + "/*.html").pipe(gulp.dest("/var/www/html/tsart/example/"));
+    cb();
+}
+
+function deployDocument(cb) {
+    gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
+    gulp.src(paths.docs + "/*").pipe(gulp.dest("/var/www/html/tsart/document/"));
     cb();
 }
 
 exports.build = gulp.series(syntax, minify);
+exports.docs = gulp.series(syntax, minify, deployDocument);
 exports.default = gulp.series(syntaxForTest, copySourceForTest, copyExampleForTest);
