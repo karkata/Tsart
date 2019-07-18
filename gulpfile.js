@@ -50,11 +50,16 @@ function copyExampleForTest(cb) {
 }
 
 function deployDocument(cb) {
+    gulp.src(paths.docs + "/**").pipe(gulp.dest("/var/www/html/tsart/document/"));
+    cb();
+}
+
+function deploy(cb) {
     gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
-    gulp.src(paths.docs + "/*").pipe(gulp.dest("/var/www/html/tsart/document/"));
     cb();
 }
 
 exports.build = gulp.series(syntax, minify);
-exports.docs = gulp.series(syntax, minify, deployDocument);
+exports.docs = gulp.series(syntax, minify, deploy, deployDocument);
+exports.onlydocs = gulp.series(deployDocument);
 exports.default = gulp.series(syntaxForTest, copySourceForTest, copyExampleForTest);

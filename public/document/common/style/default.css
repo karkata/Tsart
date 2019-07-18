@@ -4,6 +4,10 @@ html, body, iframe { height: 100%; margin: 0; padding: 0; }
 
 html>body {}
 
+html {
+    font-size: 12px;
+}
+
 body { 
     width: 100%;
     font-family: "Malgun Gothic", Tahoma, Verdana, sans-serif;
@@ -14,4 +18,31 @@ body {
 .main-container {
     display: grid;
     grid-template-columns: auto 600px auto;
+    grid-template-rows: 500px auto;
+    grid-template-areas:
+        "left center right"
+        "left center right";
+}
+
+.area-left {
+    grid-area: left;
+}
+.area-center {
+    background-color: #eee;
+    grid-area: center;
+}
+.area-right {
+    grid-area: right;
+}
+
+section h1 {
+    font-size: 2rem;
+}
+
+section h2 {
+    font-size: 1.5rem;
+}
+
+section p {
+    font-size: 1rem;
 }
