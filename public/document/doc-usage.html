@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tsart 기본 사용법</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
+    <script src="./tsart/tsart.js"></script>
+    <script src="./tsart/tsart-bar-standard.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="area-left"></div>
+        <div class="area-center">
+            <h1>Tsart 기본 사용법</h1>
+            <section>
+                <p>
+                    Tsart는 챠트 라이브러리를 사용하려면 tsart.js 파일과 tsart-{type}.js 파일을 script 태그에 선언을 해야 한다.
+                    tsart.js 파일은 Tsart 라이브러리의 코어 기능을 담당하고 있고, tsart-{type}.js 파일은 사용하고자 하는 챠트가 구현되어 있다.
+                    만일 막대 그래프를 사용하고 싶다면, tsart.js 파일을 먼저 선언하고 난 후, tsart-bar-standard.js 파일을 함께 선언하면 된다.
+                </p>
+                <pre>
+&lt;script src="./js/tsart.js"&gt;&lt;/script&gt;
+&lt;script src="./js/tsart-bar-standard.js"&gt;&lt;/script&gt;
+                </pre>
+                <p>차트가 그려질 컨테이너 역활을 담당할 HTML 요소를 생성하고,</p>
+                <pre>
+&lt;div id="chart-bar-01" style="width: 500px; height: 300px;"&gt;&lt;/div&gt;
+                </pre>
+                <p>스크립트 요소 안에서 Tsart.draw 함수를 사용하여 챠트를 그리면 된다.</p>
+                <pre>
+&lt;script&gt;
+Tsart.draw("#chart-bar-01", "bar-standard", {}, [
+     { name: "철수", value: 100, group: "가", color: "#2eccfa" }
+    ,{ name: "영희", value: 90, group: "가", color: "#2efffa" }
+    ,{ name: "명훈", value: 82, group: "나" }
+    ,{ name: "재훈", value: 50, group: "나" }
+    ,{ name: "은혜", value: 94, group: "다", visible: false }
+    ,{ name: "정석", value: 35, group: "다" }
+    ,{ name: "수지", value: 100 }
+    ,{ name: "명권", value: 77 }
+    ,{ name: "유리", value: 85 }
+    ,{ name: "혜선", value: 92 }
+]);
+&lt;/script&gt;
+                </pre>
+                <p>
+                    draw 함수의 첫 번째 파라미터는 차트가 그려질 콘테이너 요소의 DOM 아이디를 설정하고, 
+                    두 번째 파라미터는 사용할 그래프의 종류를 설정하고, 세 번째 파라미터는 그래프 옵션을 설정하고,
+                    마지막 파라미터는 그래프로 표현할 데이터를 설정한다.
+                </p>
+            </section>
+        </div>
+        <div class="area-right"></div>
+    </div>
+</body>
+</html>
