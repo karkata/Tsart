@@ -3,14 +3,12 @@
 <head>
     <title>Tsart 기본 사용법</title>
     <meta charset="utf-8"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
     <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
-    <script src="./tsart/tsart.js"></script>
-    <script src="./tsart/tsart-bar-standard.js"></script>
 </head>
 <body>
-    <div class="main-container">
-        <div class="area-left"></div>
-        <div class="area-center">
+    <div class="main">
+        <article>
             <h1>Tsart 기본 사용법</h1>
             <section>
                 <p>
@@ -18,16 +16,17 @@
                     tsart.js 파일은 Tsart 라이브러리의 코어 기능을 담당하고 있고, tsart-{type}.js 파일은 사용하고자 하는 챠트가 구현되어 있다.
                     만일 막대 그래프를 사용하고 싶다면, tsart.js 파일을 먼저 선언하고 난 후, tsart-bar-standard.js 파일을 함께 선언하면 된다.
                 </p>
-                <pre>
+                <pre class="prettyprint">
 &lt;script src="./js/tsart.js"&gt;&lt;/script&gt;
 &lt;script src="./js/tsart-bar-standard.js"&gt;&lt;/script&gt;
                 </pre>
-                <p>차트가 그려질 컨테이너 역활을 담당할 HTML 요소를 생성하고,</p>
-                <pre>
+                <p>차트가 그려질 콘테이너 역활을 담당할 HTML 요소를 생성하고,</p>
+                <pre class="prettyprint">
 &lt;div id="chart-bar-01" style="width: 500px; height: 300px;"&gt;&lt;/div&gt;
                 </pre>
                 <p>스크립트 요소 안에서 Tsart.draw 함수를 사용하여 챠트를 그리면 된다.</p>
-                <pre>
+                <p>여기서 주의할 점은 그래프가 그려질 콘테이너는 반드시 가로, 세로 크기를 명시해야 한다는 것이다.</p>
+                <pre class="prettyprint">
 &lt;script&gt;
 Tsart.draw("#chart-bar-01", "bar-standard", {}, [
      { name: "철수", value: 100, group: "가", color: "#2eccfa" }
@@ -49,8 +48,7 @@ Tsart.draw("#chart-bar-01", "bar-standard", {}, [
                     마지막 파라미터는 그래프로 표현할 데이터를 설정한다.
                 </p>
             </section>
-        </div>
-        <div class="area-right"></div>
+        </article>
     </div>
 </body>
 </html>
