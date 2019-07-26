@@ -3,25 +3,30 @@
 <head>
     <title>막대 그래프</title>
     <meta charset="utf-8"/>
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
     <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
-    <script src="./tsart/tsart.js"></script>
-    <script src="./tsart/tsart-bar-standard.js"></script>
+    <link rel="stylesheet" type="text/css" href="./common/style/tomorrow.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
 </head>
 <body>
     <div class="main">
         <article>
             <h1>막대 그래프</h1>
             <section>
-                <h2>Desription</h2>
-                <p>...</p>
+                <h2>개요</h2>
+                <div id="example-01" style="width:600px; height: 400px;"></div>
+                </pre>
             </section>
             <section>
-                <h2>Usage</h2>
+                <h2>사용법</h2>
+                <p>막대그래프를 사용하려면 tsart-bar-standard.js 파일을 참조해야 한다.</p>
+                <pre class="prettyprint">
+&lt;!-- Tsart 라이브러리 참조 --&gt;
+&lt;script src="...path.../tsart.js"&gt;&lt;/script&gt;
+&lt;script src="...path.../tsart-bar-standard.js"&gt;&lt;/script&gt;
+                </pre>
+                <h2>데이터 배열</h2>
                 <pre>...</pre>
-                <h2>Signature</h2>
-                <pre>...</pre>
-                <h2>Parameters</h2>
+                <h2>스타일</h2>
                 <table>
                     <thead></thead>
                     <tbody></tbody>
@@ -34,5 +39,35 @@
             </section>
         </article>
     </div>
+    <script src="./tsart/tsart.js"></script>
+    <script src="./tsart/tsart-bar-standard.js"></script>
+    <script>
+        const raw = [
+            { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+            { group: "1반", name: "은서", value:  75, color: "#2eccfa" },
+            { group: "2반", name: "윤주", value:  88, color: "#2eccfa" },
+            { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
+            { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
+            { group: "3반", name: "희진", value:  66, color: "#2eccfa" },
+            { group: "4반", name: "현영", value:  72, color: "#2eccfa" },
+            { group: "4반", name: "한솔", value:  98, color: "#2eccfa" },
+            { group: "5반", name: "여정", value:  45, color: "#2eccfa" },
+            { group: "5반", name: "혜주", value:  85, color: "#2eccfa" },
+            { group: "1반", name: "윤기", value:  77, color: "#2eccfa" },
+            { group: "1반", name: "윤호", value:  93, color: "#2eccfa" },
+            { group: "2반", name: "원준", value:  44, color: "#2eccfa" },
+            { group: "2반", name: "서준", value:  66, color: "#2eccfa" },
+            { group: "3반", name: "은찬", value:  54, color: "#2eccfa" },
+            { group: "3반", name: "지완", value:  85, color: "#2eccfa" },
+            { group: "4반", name: "시우", value: 100, color: "#2eccfa" },
+            { group: "4반", name: "찬혁", value:  92, color: "#2eccfa" },
+            { group: "5반", name: "성일", value:  56, color: "#2eccfa" },
+            { group: "5반", name: "성진", value:  75, color: "#2eccfa" }
+         ];
+
+         window.addEventListener("load", function () {
+            Tsart.draw("#example-01", "bar-standard", { axis: { y: { maxValue: 100, step: 10 } } }, raw);                
+         });
+    </script>
 </body>
 </html>
