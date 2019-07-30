@@ -34,6 +34,11 @@ body {
     line-height: 1.75rem;
 }
 
+.main article ul li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
 /* Prevent drawing borders by the google-code-prettify. */
 pre.prettyprint { 
     border: 0px !important; 

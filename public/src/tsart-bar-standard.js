@@ -24,7 +24,7 @@
 			this.value = t.value;
 			this.group = t.group || "";
 			this.color = t.color || "#0040ff";
-			this.visible = t.visible === false ? false : true;
+			this.nameVisible = t.nameVisible === false ? false : true;
 		} //:~ constructor
 	} //:~ class ItemElment
 
@@ -323,7 +323,7 @@
 				ctx.fillText(item.name, pt.x, pt.y);
 			}
 			// 항목 라벨 출력
-			if (opt.item.labelVisible && item.visible) {
+			if (opt.item.labelVisible && item.nameVisible) {
 				ctx.fillStyle = opt.item.groupMerging ? "#fff" :  "#000";
 				pt.x = area.c;
 				pt.y = opt.item.groupMerging ? area.m : area.b + gapTxt;
