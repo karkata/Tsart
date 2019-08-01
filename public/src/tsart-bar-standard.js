@@ -390,8 +390,8 @@
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
-					marginTop: 50,
-					marginBottom: 50,
+					marginTop: 30,
+					marginBottom: 30,
 					lineColor: "#aaa",
 					// y 축 간격
 					step: 10,

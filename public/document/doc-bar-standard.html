@@ -13,7 +13,7 @@
             <h1>막대 그래프</h1>
             <section>
                 <h2>개요</h2>
-                <div id="explanation-01" style="width: 700px; height: 400px;"></div>
+                <div id="explanation-01" style="width: 700px; height: 300px;"></div>
                 </pre>
             </section>
             <section>
@@ -61,7 +61,7 @@
             // Y 축 이름
             name: "",
             font: "normal 11px 'Arial'", fontColor: "#000",
-            marginTop: 50, marginBottom: 50,
+            marginTop: 30, marginBottom: 30,
             lineColor: "#aaa",
             // Y 축에서 값이 렌더링되는 간격
             step: 10,
@@ -112,14 +112,8 @@
                 <pre class="prettyprint">
 const raw = [
     { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
-    { group: "1반", name: "은서", value:  75, color: "#2eccfa" },
-    { group: "2반", name: "윤주", value:  88, color: "#2eccfa" },
-    { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
-    { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
-    { group: "3반", name: "희진", value:  66, color: "#2eccfa" },
-    { group: "4반", name: "현영", value:  72, color: "#2eccfa" },
-    { group: "4반", name: "한솔", value:  98, color: "#2eccfa", nameVisible: false },
-    // 데이터 생략
+    { group: "4반", name: "한솔", value:  98, color: "#01df3a", nameVisible: false },
+    // ... 데이터 생략
 ];
         </pre>
             </section>
@@ -130,16 +124,36 @@ const raw = [
 const raw = [
     { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
     { group: "1반", name: "은서", value:  75, color: "#2eccfa" },
-    { group: "2반", name: "윤주", value:  88, color: "#2eccfa" },
-    { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
-    { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
-    { group: "3반", name: "희진", value:  66, color: "#2eccfa" },
+    { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+    { group: "2반", name: "예은", value:  95, color: "#fe9a2e" },
+    { group: "3반", name: "하원", value: 100, color: "#ff0080" },
+    { group: "3반", name: "희진", value:  66, color: "#ff0080" },
     // 데이터 생략
  ];
 
-Tsart.draw("#example-01", "bar-standard", { axis: { y: { maxValue: 100, step: 10 } } }, raw);    
+Tsart.draw("#example-01", "bar-standard", null, raw);    
                 </pre>
                 <div id="example-01" style="width: 700px; height: 300px;"></div>
+                <p>
+                    Y 축 범위가 125까지 나타나는데, 이것은 내부 계산 방식 때문에 100 이상의 값까지 포함하기 때문이다.
+                    그리고 가로 크기가 600px, 세로가 300px인 콘테이너 크기보다 차트의 크기가 좀 작아 보이는 것은 상/하/좌/우에 기본 마진이 존재하기 때문이다. 스타일을 부여해서 좀 더 다듬어 보자.
+                </p>
+                <pre class="prettyprint">
+Tsart.draw("#example-02", "bar-standard", { 
+    // 차트 타이틀을 넣기 위해서 20px 정도 높이를 주었다.
+    regions: { header: { h: 20 } },
+    title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+    axis: { 
+        x: { name: "(학생)" },
+        // Y 축 범위를 100까지 고정시켰고, 10단계로 정해서 10, 20, 30 ..., 100처럼 렌더링하도록 하였다.
+        y: { name: "(점수)", maxValue: 100, step: 10 } 
+    },
+    item: { valueVisible: true } 
+}, raw);
+</pre>
+                <div id="example-02" style="width: 700px; height: 300px;"></div>
+                <p>다음은 데이터를 그룹화하여 차트에 표현하려고 한다. 데이터를 그룹화하려면 항목마다 가지고 있는 group 속성에 구별할 그룹 이름을 지정해야 한다. 그리고 그룹화를 하게 되면 그룹에 속한 항목들이 모두 하나의 막대로 표현되기 때문에 그룹 속의 항목들이 제대로 표현이 되려면 그룹마다 항목을 정렬해줘야 한다.</p>
+                <div id="example-03" style="width: 700px; height: 300px;"></div>
             </section>
         </article>
     </div>
@@ -149,31 +163,47 @@ Tsart.draw("#example-01", "bar-standard", { axis: { y: { maxValue: 100, step: 10
         const raw = [
             { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
             { group: "1반", name: "은서", value:  75, color: "#2eccfa" },
-            { group: "2반", name: "윤주", value:  88, color: "#2eccfa" },
-            { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
-            { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
-            { group: "3반", name: "희진", value:  66, color: "#2eccfa" },
-            { group: "4반", name: "현영", value:  72, color: "#2eccfa" },
-            { group: "4반", name: "한솔", value:  98, color: "#2eccfa" },
-            { group: "5반", name: "여정", value:  45, color: "#2eccfa" },
-            { group: "5반", name: "혜주", value:  85, color: "#2eccfa" },
+            { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+            { group: "2반", name: "예은", value:  95, color: "#fe9a2e" },
+            { group: "3반", name: "하원", value: 100, color: "#ff0080" },
+            { group: "3반", name: "희진", value:  66, color: "#ff0080" },
+            { group: "4반", name: "현영", value:  72, color: "#01df3a" },
+            { group: "4반", name: "한솔", value:  98, color: "#01df3a" },
+            { group: "5반", name: "여정", value:  45, color: "#facc2e" },
+            { group: "5반", name: "혜주", value:  85, color: "#facc2e" },
             { group: "1반", name: "윤기", value:  77, color: "#2eccfa" },
             { group: "1반", name: "윤호", value:  93, color: "#2eccfa" },
-            { group: "2반", name: "원준", value:  44, color: "#2eccfa" },
-            { group: "2반", name: "서준", value:  66, color: "#2eccfa" },
-            { group: "3반", name: "은찬", value:  54, color: "#2eccfa" },
-            { group: "3반", name: "지완", value:  85, color: "#2eccfa" },
-            { group: "4반", name: "시우", value: 100, color: "#2eccfa" },
-            { group: "4반", name: "찬혁", value:  92, color: "#2eccfa" },
-            { group: "5반", name: "성일", value:  56, color: "#2eccfa" },
-            { group: "5반", name: "성진", value:  75, color: "#2eccfa" }
+            { group: "2반", name: "원준", value:  44, color: "#fe9a2e" },
+            { group: "2반", name: "서준", value:  66, color: "#fe9a2e" },
+            { group: "3반", name: "은찬", value:  54, color: "#ff0080" },
+            { group: "3반", name: "지완", value:  85, color: "#ff0080" },
+            { group: "4반", name: "시우", value: 100, color: "#01df3a" },
+            { group: "4반", name: "찬혁", value:  92, color: "#01df3a" },
+            { group: "5반", name: "성일", value:  56, color: "#facc2e" },
+            { group: "5반", name: "성진", value:  75, color: "#facc2e" }
          ];
 
          window.addEventListener("load", function () {
             Tsart.draw("#explanation-01", "bar-standard", { axis: { y: { maxValue: 100, step: 10 } } }, raw);                
-
-            Tsart.draw("#example-01", "bar-standard", { axis: { y: { maxValue: 100, step: 10 } } }, raw);                
-
+            Tsart.draw("#example-01", "bar-standard", null, raw);                
+            Tsart.draw("#example-02", "bar-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                axis: { 
+                    x: { name: "(학생)" },
+                    y: { name: "(점수)", maxValue: 100, step: 10 } 
+                },
+                item: { valueVisible: true } 
+            }, raw);
+            Tsart.draw("#example-03", "bar-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                axis: { 
+                    x: { name: "(학생)" },
+                    y: { name: "(점수)", maxValue: 100, step: 10 } 
+                },
+                item: { valueVisible: true, groupMerging: true } 
+            }, raw);
          });
     </script>
 </body>
