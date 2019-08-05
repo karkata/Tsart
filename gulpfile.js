@@ -55,11 +55,17 @@ function deployDocument(cb) {
 }
 
 function deploy(cb) {
+    gulp.src(paths.js + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
+    cb();
+}
+
+function deployMinified(cb) {
     gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
     cb();
 }
 
 exports.build = gulp.series(syntax, minify);
-exports.docs = gulp.series(syntax, minify, deploy, deployDocument);
+exports.puredocs = gulp.series(deploy, deployDocument);
+exports.docs = gulp.series(syntax, minify, deployMinified, deployDocument);
 exports.onlydocs = gulp.series(deployDocument);
 exports.default = gulp.series(syntaxForTest, copySourceForTest, copyExampleForTest);

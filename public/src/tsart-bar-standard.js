@@ -67,6 +67,14 @@
 			this.maxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxv), this.options.axis.y.maxValue);
 		} //:~ calculateOne method
 
+        sortInsideGroup() {
+            for (let g of this.groups.values()) {
+                g.items.sort((a, b) => {
+                    return a.value > b.value;
+                });
+            }
+        } //:~ sortInsideGroup method
+
 		/**
 		 * (public)
 		 * Clear items.
@@ -212,6 +220,11 @@
 			let iw = 0, ix = 0, bw = 0;
 			let bxc = 0, cby = 0, oby = 0, barea = null;
 			for (let g of this.groups.values()) {
+
+                if (opt.item.groupMerging === true) {
+                    g.items.sort((v1, v2) => v1.value === v2.value ? 0 : (v1.value - v2.value) < 0 ? -1 : 1);
+                }
+
 				gxc = area.x + (gidx * gw) + (gw / 2);
 				// 항목 크기
 				iw = (gw * opt.item.groupGapRatio) / (opt.item.groupMerging ? 1 : g.items.length);
@@ -320,7 +333,7 @@
 				ctx.fillStyle = "#000";
 				ctx.textAlign = "center";
 				ctx.textBaseline = "top";
-				ctx.fillText(item.name, pt.x, pt.y);
+				ctx.fillText(item.group, pt.x, pt.y);
 			}
 			// 항목 라벨 출력
 			if (opt.item.labelVisible && item.nameVisible) {
