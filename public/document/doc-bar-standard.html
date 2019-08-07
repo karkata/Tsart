@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>막대 그래프</title>
+    <title>바-차트</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
     <link rel="stylesheet" type="text/css" href="./common/style/tomorrow.css"/>
@@ -10,7 +10,7 @@
 <body>
     <div class="main">
         <article>
-            <h1>막대 그래프</h1>
+            <h1>바-차트</h1>
             <section>
                 <h2>개요</h2>
                 <div id="explanation-01" style="width: 700px; height: 300px;"></div>
@@ -18,7 +18,7 @@
             </section>
             <section>
                 <h2>사용법</h2>
-                <p>막대그래프를 사용하려면 tsart-bar-standard.js 파일을 참조해야 한다.</p>
+                <p>바-차트를 사용하려면 tsart-bar-standard.js 파일을 참조해야 한다.</p>
                 <pre class="prettyprint">
 &lt;!-- Tsart 라이브러리 참조 --&gt;
 &lt;script src="...path.../tsart.js"&gt;&lt;/script&gt;
@@ -152,7 +152,22 @@ Tsart.draw("#example-02", "bar-standard", {
 }, raw);
 </pre>
                 <div id="example-02" style="width: 700px; height: 300px;"></div>
-                <p>다음은 데이터를 그룹화하여 차트에 표현하려고 한다. 데이터를 그룹화하려면 항목마다 가지고 있는 group 속성에 구별할 그룹 이름을 지정해야 한다. 그리고 그룹화를 하게 되면 그룹에 속한 항목들이 모두 하나의 막대로 표현되기 때문에 그룹 속의 항목들이 제대로 표현이 되려면 그룹마다 항목을 정렬해줘야 한다.</p>
+                <p>다음은 데이터를 그룹화하여 차트에 표현하려고 한다. 데이터를 그룹화하려면 항목마다 가지고 있는 group 속성에 구별할 그룹 이름을 지정해야 한다. 그리고 그룹 머지를 하게 되면 그룹에 속한 항목들이 모두 하나의 막대로 표현되기 때문에 그룹 속의 항목들이 제대로 표현이 되려면 그룹마다 항목을 정렬해줘야 한다. tsart는 groupMerging 속성을 true로 설정하면 데이터를 등록할 때 내부적으로 그룹 내부 정렬을 수행한다. (그룹 머지를 하게 되면 막대의 값은 출력되지 않는다.)</p>
+                <pre class="prettyprint">
+// 각 그룹마다 성적 순으로 색상을 다르게 설정했다.
+let raw2 = [
+    { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+    { group: "1반", name: "은서", value:  75, color: "#01df3a" },
+    { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+    { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
+    ...
+];    
+Tsart.draw("#example-03", "bar-standard", { 
+    ...
+    // groupMerging 속성 값을 true로 설정해주었다.
+    item: { groupMerging: true } 
+}, raw2);
+</pre>
                 <div id="example-03" style="width: 700px; height: 300px;"></div>
             </section>
         </article>
@@ -195,6 +210,29 @@ Tsart.draw("#example-02", "bar-standard", {
                 },
                 item: { valueVisible: true } 
             }, raw);
+        
+            let raw2 = [
+                { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+                { group: "1반", name: "은서", value:  75, color: "#01df3a" },
+                { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+                { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
+                { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
+                { group: "3반", name: "희진", value:  66, color: "#ff0080" },
+                { group: "4반", name: "현영", value:  72, color: "#01df3a" },
+                { group: "4반", name: "한솔", value:  98, color: "#fe9a2e" },
+                { group: "5반", name: "여정", value:  45, color: "#01df3a" },
+                { group: "5반", name: "혜주", value:  85, color: "#2eccfa" },
+                { group: "1반", name: "윤기", value:  77, color: "#ff0080" },
+                { group: "1반", name: "윤호", value:  93, color: "#fe9a2e" },
+                { group: "2반", name: "원준", value:  44, color: "#01df3a" },
+                { group: "2반", name: "서준", value:  66, color: "#ff0080" },
+                { group: "3반", name: "은찬", value:  54, color: "#01df3a" },
+                { group: "3반", name: "지완", value:  85, color: "#fe9a2e" },
+                { group: "4반", name: "시우", value: 100, color: "#2eccfa" },
+                { group: "4반", name: "찬혁", value:  92, color: "#ff0080" },
+                { group: "5반", name: "성일", value:  56, color: "#ff0080" },
+                { group: "5반", name: "성진", value:  75, color: "#fe9a2e" }
+            ];    
             Tsart.draw("#example-03", "bar-standard", { 
                 regions: { header: { h: 20 } },
                 title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
@@ -203,7 +241,7 @@ Tsart.draw("#example-02", "bar-standard", {
                     y: { name: "(점수)", maxValue: 100, step: 10 } 
                 },
                 item: { valueVisible: true, groupMerging: true } 
-            }, raw);
+            }, raw2);
          });
     </script>
 </body>
