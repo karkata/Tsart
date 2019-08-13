@@ -1,10 +1,12 @@
 /* global Tsart: true */
 (function () {
 	"use strict";
+
 	class GroupElement {
-		constructor(name) {
+		constructor(name, color) {
 			this.name = name;
 			this.items = [];
+            this.color = color; 
 		} //:~ constructor
 
 		get size() {
@@ -67,14 +69,6 @@
 			this.maxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxv), this.options.axis.y.maxValue);
 		} //:~ calculateOne method
 
-        sortInsideGroup() {
-            for (let g of this.groups.values()) {
-                g.items.sort((a, b) => {
-                    return a.value > b.value;
-                });
-            }
-        } //:~ sortInsideGroup method
-
 		/**
 		 * (public)
 		 * Clear items.
@@ -98,7 +92,7 @@
 			let g = null;
 			if (typeof t.group === "undefined") t.group = "";
 			if (!this.groups.has(t.group)) {
-				g = new GroupElement(t.group);
+				g = new GroupElement(t.group, t.color);
 				this.groups.set(t.group, g);
 			} else {
 				g = this.groups.get(t.group);
@@ -140,7 +134,6 @@
 
 		updateLeft() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const posx = 0;
 			const posy = Tsart.Util.toPixel(opt.regions.header.h, this.cv.height);
@@ -150,13 +143,12 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "left") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups, this.data);
 			}
 		} //:~ updateLeft method
 
 		updateRight() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const w = Tsart.Util.toPixel(opt.regions.right.w, this.cv.width);
 			const posx = this.cv.width - w;
@@ -166,25 +158,37 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "right") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups, this.data);
 			}
 		} //:~ updateRight method
 
-		updateCategory(ctx, area, opt, d) {
+		updateCategory(ctx, area, opt, g, d) {
 			// 범례 높이, 최대 20pixel을 넘을 수 없다.
-			let ch = Math.min(area.h / d.length, 20);
-			let sy = parseInt((area.h / 2) - (d.length * ch / 2), 10);
+            const len = opt.category.target === "group" ? g.size : d.length; 
+			const ch = Math.min(area.h / len, 20);
+			const sy = parseInt((area.h / 2) - (len * ch / 2), 10);
 			
 			ctx.font = opt.category.font;
 			ctx.textAlign = "start";
 			ctx.textBaseline = "middle";
-			for (let i = 0, t = null; i < d.length; i++) {
-				t = d[i];
-				ctx.fillStyle = t.color;
-				ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
-				ctx.fillStyle = opt.category.fontColor;
-				ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
-			}
+            if (opt.category.target === "group") {
+                let i = 0;
+                for (let t of g.values()) {
+                    ctx.fillStyle = t.color;
+                    ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+                    ctx.fillStyle = opt.category.fontColor;
+                    ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
+                    i++;
+                }
+            } else {
+                for (let i = 0, t = null; i < d.length; i++) {
+                    t = d[i];
+                    ctx.fillStyle = t.color;
+                    ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+                    ctx.fillStyle = opt.category.fontColor;
+                    ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
+                }
+            }
 		} //:~ updateCategory method
 
 		updateFooter() {
@@ -383,7 +387,9 @@
 			},
 			category: {
 				visible: false,
-				// 범례 위치: 'left' | 'right'
+                // Rendering target: "item"|"group"
+                target: "item",
+				// Rendering area: "left"|"right"
 				position: "left",
 				font: "normal 11px 'Arial'",
 				fontColor: "#000"

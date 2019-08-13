@@ -3,9 +3,10 @@
 	"user strict";
 	
 	class GroupElement {
-		constructor(name) {
+		constructor(name, color) {
 			this.name = name;
 			this.items = [];
+            this.color = color;
 		} //:~ constructor
 
 		get size() {
@@ -25,7 +26,7 @@
 			this.value = t.value;
 			this.group = t.group || "";
 			this.color = t.color || "#0040ff";
-			this.visible = t.visible === false ? false : true;
+			this.nameVisible = t.nameVisible === false ? false : true;
 		} //:~ constructor
 	} //:~ class ItemElment
 
@@ -83,7 +84,7 @@
 			let g = null;
 			if (typeof t.group === "undefined") t.group = "";
 			if (!this.groups.has(t.group)) {
-				g = new GroupElement(t.group);
+				g = new GroupElement(t.group, t.color);
 				this.groups.set(t.group, g);
 			} else {
 				g = this.groups.get(t.group);
@@ -125,7 +126,6 @@
 
 		updateLeft() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const posx = 0;
 			const posy = Tsart.Util.toPixel(opt.regions.header.h, this.cv.height);
@@ -135,13 +135,12 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "left") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups, this.data);
 			}
 		} //:~ updateLeft method
 
 		updateRight() {
 			const opt = this.options;
-			const d = this.data;
 			const ctx = this.cv.getContext("2d");
 			const w = Tsart.Util.toPixel(opt.regions.right.w, this.cv.width);
 			const posx = this.cv.width - w;
@@ -151,25 +150,37 @@
 			ctx.clearRect(posx, posy, w, h);
 			
 			if (opt.category.visible && opt.category.position === "right") {
-				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, d);
+				this.updateCategory(ctx, Tsart.Util.toDim(posx, posy, w, h), opt, this.groups, this.data);
 			}
 		} //:~ updateRight method
 
-		updateCategory(ctx, area, opt, d) {
+		updateCategory(ctx, area, opt, g, d) {
 			// 범례 높이, 최대 20pixel을 넘을 수 없다.
-			let ch = Math.min(area.h / d.length, 20);
-			let sy = parseInt((area.h / 2) - (d.length * ch / 2), 10);
+            const len = opt.category.target === "group" ? g.size : d.length;
+			const ch = Math.min(area.h / len, 20);
+			const sy = parseInt((area.h / 2) - (len * ch / 2), 10);
 			
 			ctx.font = opt.category.font;
 			ctx.textAlign = "start";
 			ctx.textBaseline = "middle";
-			for (let i = 0, t = null; i < d.length; i++) {
-				t = d[i];
-				ctx.fillStyle = t.color;
-				ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
-				ctx.fillStyle = opt.category.fontColor;
-				ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
-			}
+            if (opt.category.target === "group") {
+                let i = 0;
+                for (let t of g.values()) {
+                    ctx.fillStyle = t.color;
+                    ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+                    ctx.fillStyle = opt.category.fontColor;
+                    ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
+                    i++;
+                }
+            } else {
+                for (let i = 0, t = null; i < d.length; i++) {
+                    t = d[i];
+                    ctx.fillStyle = t.color;
+                    ctx.fillRect(area.x + 10, area.y + sy + (ch * i), 20, ch * .8);
+                    ctx.fillStyle = opt.category.fontColor;
+                    ctx.fillText(t.name, area.x + 34, area.y + sy + (ch * i) + (ch * .4));
+                }
+            }
 		} //:~ updateCategory method
 
 		updateFooter() {
@@ -193,7 +204,6 @@
 			
 			ctx.clearRect(posx, posy, w, h);
 			
-			// Define the area to be rendered chart.
 			const area = Tsart.Util.toDim(
 				posx + opt.axis.x.marginLeft, 
 				posy + opt.axis.y.marginTop, 
@@ -204,24 +214,24 @@
 						
 			const gh = area.h / this.groups.size;
 			
-			// gidx: 그룹 순서, gyc: 그룹 별 y축 가운데 위치
 			let gidx = 0, gyc = 0;
 			let ih = 0, iy = 0, bh = 0;
 			let byc = 0, cbx = 0, obx = 0, barea = null;
 			for (let g of this.groups.values()) {
+
+                if (opt.item.groupMerging === true) {
+                    g.items.sort((v1, v2) => v1.value === v2.value ? 0 : (v1.value - v2.value) < 0 ? -1 : 1);
+                }
+
 				gyc = area.y + (gidx * gh) + (gh / 2);
-				// 항목 높이 
 				ih = (gh * opt.item.groupGapRatio) / (opt.item.groupMerging ? 1 : g.items.length);
-				// 첫 항목의 y 축 시작 위치
 				iy = gyc - (gh * opt.item.groupGapRatio / 2);
-				// 여백을 제외한 실제 항목이 그려지는 높이 
 				bh = opt.item.groupMerging ? ih : ih * opt.item.gapRatio;
 				for (let i = 0, t = null; i < g.items.length; i++) {
 					t = g.items[i];
 					if (i === 0) obx = area.x;
 					byc = iy + (opt.item.groupMerging ? 0 : (i * ih)) + (ih / 2);
 					cbx = parseInt(area.x + (t.value * area.w / this.maxt), 10);
-					//barea = Tsart.Util.toDim(bxc - (bw / 2), cby, bw, opt.item.groupMerging ? oby - cby : area.b - cby);
 					barea = Tsart.Util.toDim(obx, byc - (bh / 2), cbx - obx, bh);
 					obx = opt.item.groupMerging? cbx : obx;
 					this.updateBar(ctx, barea, t, i, opt);
@@ -320,11 +330,11 @@
 				ctx.fillStyle = "#000";
 				ctx.textAlign = "right";
 				ctx.textBaseline = "middle";
-				ctx.fillText(item.name, pt.x, pt.y);
+				ctx.fillText(item.group, pt.x, pt.y);
 			}
 
 			// 항목 라벨 출력
-			if (opt.item.labelVisible && item.visible) {
+			if (opt.item.labelVisible && item.nameVisible) {
 				ctx.fillStyle = opt.item.groupMerging ? "#fff" :  "#000";
 				pt.x = opt.item.groupMerging ? area.c : area.x - gapTxt;
 				pt.y = area.m;
@@ -362,7 +372,7 @@
 		st = Tsart.Util.extend({
 			title: { content: "", font: "bold 32px 'Arial'", fontColor: "#999999" },
 			regions: {
-				// 길이는 pixel 또는 %로 지정
+				// Length unit: pixel or percentage 
 				header:	{ h: "0", bkcolor: "#fff" },
 				left:	{ w: "0", bkcolor: "#fff" },
 				right:	{ w: "0", bkcolor: "#fff" },
@@ -371,14 +381,16 @@
 			},
 			category: {
 				visible: false,
-				// 범례 위치: 'left' | 'right'
+                // Rendering target: "item"|"group"
+                target: "item",
+				// Rendering area: "left"|"right"
 				position: "left",
 				font: "normal 11px 'Arial'",
 				fontColor: "#000"
 			},
 			axis: {
 				x: {
-					// x 축 이름
+					// X-axis name 
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
@@ -387,13 +399,13 @@
 					lineColor: "#aaa",
 					// x 축 간격
 					step: 10,
-					// 값
+					// Max value 
 					maxValue: Number.MAX_VALUE,
-					// 위치: 'bottom'|'top'
+					// Rendering position: "bottom"|"top"
 					position: "bottom"
 				},
 				y: {
-					// y 축 이름
+					// Y-axis name
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
