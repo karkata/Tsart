@@ -8,7 +8,7 @@
 			this.name = t.name;
 			this.value = t.value;
 			this.group = t.group || "";
-			this.visible = t.visible === false ? false : true;
+			this.nameVisible = t.nameVisible === false ? false : true;
 		} //:~ constructor
 	} //:~ class ItemElment
 
@@ -65,7 +65,7 @@
 
 		calculateAll() {
 			for (let i = 0; i < this.data.length; i++) {
-				this.addGroup(this.data[i]);
+				this.addItem(this.data[i]);
 			}
 		} //:~ calculate method
 
@@ -78,8 +78,8 @@
 			let idx = this.xclass.indexOf(item.name);
 			if (idx < 0) {
 				this.xclass.push(item.name);
-				this.xclassVisible[idx] = item.visible === false ? false : this.xclassVisible[idx];
-			} else this.xclassVisible.push(item.visible);
+				this.xclassVisible[idx] = item.nameVisible === false ? false : this.xclassVisible[idx];
+			} else this.xclassVisible.push(item.nameVisible);
 		} //:~ calculateOne method
 
 		/**
@@ -103,27 +103,33 @@
 			}
 		} //:~ addGroup method
 		
+        /**
+		 * Get the target group.
+		 * @param name The group name as a key.
+		 */
+		getGroup(name) {
+			let group = null;
+			if (typeof name === "undefined") name = "";
+			if (!this.groups.has(name)) {
+				group = new GroupElement(name);
+				this.groups.set(name, group);
+			} else {
+				group = this.groups.get(name);
+			}
+			return group;
+		} //:~ addGroup method
+
 		/**
 		 * (public)
 		 * Add an item.
-		 * @param t A group name or an instance of the GroupElement class
 		 * @param t An item that is indivisual information for diplaying line chart
 		 */
-		addItem(g, t) {
-			if (typeof g === "string") {
-				if (!this.groups.has(g)) {
-					g = new GroupElement(g);
-					this.groups.set(g.name, g);
-				} else {
-					g = this.groups.get(g);
-				}
-				this.addItem(g, t);
-				return;
-			} else if (g instanceof GroupElement) {
-				let item = new ItemElement(g.size, t);
-				g.addItem(item);
-				this.calculateOne(item);
-			}
+		addItem(t) {
+			let g = this.getGroup(t.group);
+			if (g.size == 0) g.color = t.color;
+			let item = new ItemElement(g.size, t);
+			g.addItem(item);
+			this.calculateOne(item);
 		} //:~ addItem method	
 		
 		update() {

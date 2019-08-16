@@ -8,6 +8,7 @@
 			this.name = t.name;
 			this.value = t.value;
 			this.group = t.group || "";
+            this.nameVisible = t.nameVisible === false ? false : true;
 		} //:~ constructor
 	} //:~ class ItemElment
 
@@ -42,6 +43,7 @@
 			this.maxn = "";
 			this.maxg = "";
 			this.xclass = [];
+            this.xclassVisible = [];
 
 			this.calculateAll();
 		} //:~ constructor method
@@ -73,7 +75,11 @@
 			if (this.maxn.length < item.name.length) this.maxn = item.name;
 			if (this.maxg.length < item.group.length) this.maxg = item.group;
 			this.maxt = Math.min(Tsart.Util.getMaxAxisValue(this.maxv), this.options.axis.y.maxValue);
-			if (this.xclass.indexOf(item.name) < 0) this.xclass.push(item.name);
+            let idx = this.xclass.indexOf(item.name);
+			if (idx < 0) {
+                 this.xclass.push(item.name);
+                 this.xclassVisible[idx] = item.nameVisible === false ? false : this.xclassVisible[idx];
+            } else this.xclassVisible.push(item.nameVisible);
 		} //:~ calculateOne method
 
 		/**

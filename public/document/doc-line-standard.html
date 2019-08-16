@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <title>라인-차트</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Autor: Jeonghun Bu, Type: JavaScript library, Category: Chart UI, Subcategory: Line chart"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
+    <link rel="stylesheet" type="text/css" href="./common/style/tomorrow.css"/>
+    <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
+    </head>
+<body>
+    <div class="main">
+        <article>
+            <h1>라인-차트</h1>
+            <section>
+                <h2>개요</h2>
+                <div id="explanation-01" style="width: 700px; height: 300px;"></div>
+                </pre>
+            </section>
+            <section>
+                <h2>사용법</h2>
+                <p>라인-차트를 사용하려면 tsart-line-standard.js 파일을 참조해야 한다.</p>
+                <pre class="prettyprint">
+&lt;!-- Tsart 라이브러리 참조 --&gt;
+&lt;script src="...path.../tsart.js"&gt;&lt;/script&gt;
+&lt;script src="...path.../tsart-line-standard.js"&gt;&lt;/script&gt;
+                </pre>
+                <h2>스타일</h2>
+                <pre class="prettyprint">
+{
+    title: { 
+        content: "차트의 타이틀", 
+        font: "bold 32px 'Arial'", fontColor: "#999999" 
+    },
+    // 차트가 그려지는 부분(client)와 상/하/좌/우 영역의 크기 및 배경색을 지정한다.
+    regions: {
+        //  'h, w'는 pixel 단위 또는 %로 지정할 수 있다.
+        header:	{ h: "0", bkcolor: "#fff" },
+        left:	{ w: "0", bkcolor: "#fff" },
+        right:	{ w: "0", bkcolor: "#fff" },
+        footer:	{ h: "0", bkcolor: "#fff" },
+        // 차트가 그려질 client 영역은 크기를 조절할 수 없다.
+        client:	{ bkcolor: "#fff" }
+    },
+    // 범례 렌더링에 관한 스타일을 설정한다.
+    category: {
+        visible: false,
+        // 렌더링 대상: "item"|"group"
+        target: "item",
+        // 위치: "left"|"right"
+        position: "left",
+        font: "normal 11px 'Arial'", fontColor: "#000"
+    },
+    // X/Y 축 렌더링에 관한 스타일을 설정한다.
+    axis: {
+        x: {
+            // X 축 이름
+            name: "",
+            font: "normal 11px 'Arial'", fontColor: "#000",
+            marginLeft: 50, marginRight: 50,
+            lineColor: "#aaa"
+        },
+        y: {
+            // Y 축 이름
+            name: "",
+            font: "normal 11px 'Arial'", fontColor: "#000",
+            marginTop: 30, marginBottom: 30,
+            lineColor: "#aaa",
+            // Y 축에서 값이 렌더링되는 간격
+            step: 10,
+            // Y 축 최상단 값
+            maxValue: Number.MAX_VALUE,
+            // 축 위치: "left"|"right"
+            position: "left"
+        },
+        grid: {
+            lineColor: "#ddd",
+            visible: true
+        }
+    },
+    // 항목 렌더링에 관한 스타일을 설정한다.
+    item: {
+        // 그룹 간격, 0~1
+        groupGapRatio: .8,
+        // 항목 간격, 0~1 
+        gapRatio: .8,
+        // 라벨 출력 여부: true | false 
+        labelVisible: true,
+        // 라벨 회전: "horizon"|"vertical"
+        labelRotate: "horizon",
+        // 값 출력 여부: false|true
+        valueVisible: false,
+        // 그룹 병합 여부
+        groupMerging: false
+    }
+}
+                </pre>
+                <h2>입력 데이터</h2>
+                <p>입력받는 데이터는 다음과 같은 형식을 갖는 항목(JSON 객체)을 담는 배열이다.</p>
+                <pre class="prettyprint">
+{
+    // (option) 항목을 묶는 그룹이다.
+    group: "group_name",
+    // (required) 항목의 이름이다.
+    name: "item_name",
+    // (required) 항목의 값이다.
+    value: 100,
+    // (option) 항목을 구분하는 색상으로서 #으로 시작하는 HEX 값이다.
+    color: "#ff0000",
+    // (option) 항목의 이름을 숨길
+    nameVisible: true
+}             
+                </pre>
+                <p>데이터의 예는 다음과 같다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+    { group: "4반", name: "한솔", value:  98, color: "#01df3a", nameVisible: false },
+    // ... 데이터 생략
+];
+        </pre>
+            </section>
+            <section>
+                <h2>예제</h2>
+                <p>가장 간단한 사용 예이다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+    { group: "1반", name: "은서", value:  75, color: "#2eccfa" },
+    { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+    { group: "2반", name: "예은", value:  95, color: "#fe9a2e" },
+    { group: "3반", name: "하원", value: 100, color: "#ff0080" },
+    { group: "3반", name: "희진", value:  66, color: "#ff0080" },
+    // 데이터 생략
+ ];
+
+Tsart.draw("#example-01", "line-standard", null, raw);    
+                </pre>
+                <div id="example-01" style="width: 700px; height: 300px;"></div>
+                <p>
+                    Y 축 범위가 125까지 나타나는데, 이것은 내부 계산 방식 때문에 100 이상의 값까지 포함하기 때문이다.
+                    그리고 가로 크기가 600px, 세로가 300px인 콘테이너 크기보다 차트의 크기가 좀 작아 보이는 것은 상/하/좌/우에 기본 마진이 존재하기 때문이다. 스타일을 부여해서 좀 더 다듬어 보자.
+                </p>
+                <pre class="prettyprint">
+Tsart.draw("#example-02", "line-standard", { 
+    // 차트 타이틀을 넣기 위해서 20px 정도 높이를 주었다.
+    regions: { header: { h: 20 } },
+    title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+    axis: { 
+        x: { name: "(학생)" },
+        // Y 축 범위를 100까지 고정시켰고, 10단계로 정해서 10, 20, 30 ..., 100처럼 렌더링하도록 하였다.
+        y: { name: "(점수)", maxValue: 100, step: 10 } 
+    },
+    item: { valueVisible: true } 
+}, raw);
+</pre>
+                <div id="example-02" style="width: 700px; height: 300px;"></div>
+                <p>범례를 표현해보자.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-03", "line-standard", { 
+    // 왼쪽 영역에 범례가 생성될 것이므로 left 영역이 보이도록 가로 크기를 100으로 설정했다.
+    regions: { header: { h: 20 }, left: { w: 100 } },
+    title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+    // 범례가 보이도록 설정한다.
+    category: { visible: true },
+    axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+    // 항목 라벨을 출력하지 않도록 하였다.
+    item: { valueVisible: true, labelVisible: false } 
+}, raw);
+</pre>                
+                <div id="example-03" style="width: 700px; height: 300px;"></div>
+                <p>예제로 사용하는 표본 데이터가 각 항목별로 범례를 표현하기에는 어울리지 않는다. 그래서 항목 라벨 대신에 그룹 라벨을 범례로 사용하려고 한다.</p>
+                 <pre class="prettyprint">
+Tsart.draw("#example-04", "line-standard", { 
+    // 오른쪽 영역에 범례를 생성하는 것이 더 나아 보인다.
+    regions: { header: { h: 20 }, left: { w: 100 } },
+    title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+    // 범례를 오른쪽에 생성하도록 하고, 대상을 그룹으로 바꿨다.
+    category: { visible: true, target: "group", position: "right" },
+    axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+    item: { valueVisible: true } 
+}, raw);
+</pre>
+                <div id="example-04" style="width: 700px; height: 300px;"></div>
+                <p>다음은 항목들을 그룹 단위로 합쳐서 차트에 표현하려고 한다. 그룹화를 하려면 항목마다 가지고 있는 group 속성에 구별할 그룹 이름을 지정해야 한다. 그리고 그룹에 속한 항목들을 하나로 합쳤을 때 제대로 표현이 되려면 그룹 항목들을 정렬해줘야 한다. tsart는 groupMerging 속성을 true로 설정하면 데이터를 등록할 때 내부적으로 그룹 내부 정렬을 수행한다. (그룹 머지를 하게 되면 막대의 값은 출력되지 않는다.)</p>
+                <pre class="prettyprint">
+// 각 그룹마다 성적 순으로 색상을 다르게 설정했다.
+const raw2 = [
+    { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+    { group: "1반", name: "은서", value:  75, color: "#01df3a" },
+    { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+    { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
+    ...
+];    
+Tsart.draw("#example-05", "line-standard", { 
+    ...
+    // groupMerging 속성 값을 true로 설정해주었다.
+    item: { groupMerging: true } 
+}, raw2);
+</pre>
+                <div id="example-05" style="width: 700px; height: 300px;"></div>
+            </section>
+        </article>
+    </div>
+    <script src="./tsart/tsart.js"></script>
+    <script src="./tsart/tsart-line-standard.js"></script>
+    <script>
+        const raw = [
+            { group: "1반", name: "1", value: 100, color: "#2eccfa" },
+            { group: "1반", name: "2", value:  75, color: "#2eccfa" },
+            { group: "1반", name: "3", value:  88, color: "#2eccfa" },
+            { group: "1반", name: "4", value:  95, color: "#2eccfa" },
+            { group: "1반", name: "5", value: 100, color: "#2eccfa" },
+            { group: "1반", name: "6", value:  66, color: "#2eccfa" },
+            { group: "1반", name: "7", value:  72, color: "#2eccfa" },
+            { group: "1반", name: "8", value:  98, color: "#2eccfa" },
+            { group: "1반", name: "9", value:  45, color: "#2eccfa" },
+            { group: "1반", name: "10", value:  85, color: "#2eccfa" },
+            { group: "2반", name: "1", value:  77, color: "#fe9a2e" },
+            { group: "2반", name: "2", value:  93, color: "#fe9a2e" },
+            { group: "2반", name: "3", value:  44, color: "#fe9a2e" },
+            { group: "2반", name: "4", value:  66, color: "#fe9a2e" },
+            { group: "2반", name: "5", value:  54, color: "#fe9a2e" },
+            { group: "2반", name: "6", value:  85, color: "#fe9a2e" },
+            { group: "2반", name: "7", value: 100, color: "#fe9a2e" },
+            { group: "2반", name: "8", value:  92, color: "#fe9a2e" },
+            { group: "2반", name: "9", value:  56, color: "#fe9a2e" },
+            { group: "2반", name: "10", value:  75, color: "#fe9a2e" }
+         ];
+
+         window.addEventListener("load", function () {
+            Tsart.draw("#explanation-01", "line-standard", { axis: { y: { maxValue: 100, step: 10 } } }, raw);                
+            Tsart.draw("#example-01", "line-standard", null, raw);                
+            Tsart.draw("#example-02", "line-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+                item: { valueVisible: true } 
+            }, raw);
+            Tsart.draw("#example-03", "line-standard", { 
+                regions: { header: { h: 20 }, left: {w: 75 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                category: { visible: true },
+                axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+                item: { valueVisible: true, labelVisible: false } 
+            }, raw);
+            Tsart.draw("#example-04", "line-standard", { 
+                regions: { header: { h: 20 }, right: { w: 75 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                category: { visible: true, target: "group", position: "right" },
+                axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+                item: { valueVisible: true } 
+            }, raw);
+            
+            const raw2 = [
+                { group: "1반", name: "은영", value: 100, color: "#2eccfa" },
+                { group: "1반", name: "은서", value:  75, color: "#01df3a" },
+                { group: "2반", name: "윤주", value:  88, color: "#fe9a2e" },
+                { group: "2반", name: "예은", value:  95, color: "#2eccfa" },
+                { group: "3반", name: "하원", value: 100, color: "#2eccfa" },
+                { group: "3반", name: "희진", value:  66, color: "#ff0080" },
+                { group: "4반", name: "현영", value:  72, color: "#01df3a" },
+                { group: "4반", name: "한솔", value:  98, color: "#fe9a2e" },
+                { group: "5반", name: "여정", value:  45, color: "#01df3a" },
+                { group: "5반", name: "혜주", value:  85, color: "#2eccfa" },
+                { group: "1반", name: "윤기", value:  77, color: "#ff0080" },
+                { group: "1반", name: "윤호", value:  93, color: "#fe9a2e" },
+                { group: "2반", name: "원준", value:  44, color: "#01df3a" },
+                { group: "2반", name: "서준", value:  66, color: "#ff0080" },
+                { group: "3반", name: "은찬", value:  54, color: "#01df3a" },
+                { group: "3반", name: "지완", value:  85, color: "#fe9a2e" },
+                { group: "4반", name: "시우", value: 100, color: "#2eccfa" },
+                { group: "4반", name: "찬혁", value:  92, color: "#ff0080" },
+                { group: "5반", name: "성일", value:  56, color: "#ff0080" },
+                { group: "5반", name: "성진", value:  75, color: "#fe9a2e" }
+            ];    
+            Tsart.draw("#example-05", "line-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "학생 수학 성적", font: "bold 18px 'Open Sans'" },
+                axis: { x: { name: "(학생)" }, y: { name: "(점수)", maxValue: 100, step: 10 } },
+                item: { valueVisible: true, groupMerging: true } 
+            }, raw2);
+         });
+    </script>
+</body>
+</html>
