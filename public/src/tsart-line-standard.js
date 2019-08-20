@@ -381,7 +381,7 @@
 				}
 
 				// Render the label.
-				if (i + 1 === dim.length && opt.item.labelVisible && t.visible) {
+				if (i + 1 === dim.length && opt.item.labelVisible && t.nameVisible) {
 					pt.x = dim[i].x + gapTxt;
 					pt.y = dim[i].y;
 					ctx.textAlign = "start";
@@ -457,9 +457,9 @@
 			item: {
 				// 항목 지점 표시: true | false
 				spotVisible: true,
-				// 항목 라벨 위치: true | false 
+				// 그룹 라벨 표시: true | false 
 				labelVisible: true,
-				// 항목 값 출력: false | true
+				// 항목 값 표시: false | true
 				valueVisible: true 
 			}
 		}, st);
