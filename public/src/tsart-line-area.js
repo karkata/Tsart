@@ -254,7 +254,7 @@
 				pt.x = area.x + (i * xw) + (xw / 2);
 				pt.y = area.b + gap;
 				ctx.fillText(this.xclass[i], pt.x, pt.y)
-				if (opt.axis.grid.xVisible) {
+				if (opt.axis.grid.xVisible === true && this.xclassVisible[i] === true) {
 					ctx.strokeStyle = opt.axis.grid.xLineColor;
 					ctx.beginPath();
 					// For drawing one pixel line, we need to add .5.
@@ -403,7 +403,6 @@
 		st = Tsart.Util.extend({
 			title: { content: "", font: "bold 32px 'Arial'", fontColor: "#999999" },
 			regions: {
-				// 길이는 pixel 또는 %로 지정
 				header:	{ h: "0", bkcolor: "#fff" },
 				left:	{ w: "0", bkcolor: "#fff" },
 				right:	{ w: "0", bkcolor: "#fff" },
@@ -412,34 +411,27 @@
 			},
 			category: {
 				visible: false,
-				// 범례 위치: 'left' | 'right'
+				// position: "left"|"right"
 				position: "left",
-				font: "normal 11px 'Arial'",
-				fontColor: "#000"
+				font: "normal 11px 'Arial'", fontColor: "#000"
 			},
 			axis: {
 				x: {
-					// x 축 이름
 					name: "",
-					font: "normal 11px 'Arial'",
-					fontColor: "#000",
-					marginLeft: 50,
+					font: "normal 11px 'Arial'", fontColor: "#000", marginLeft: 50,
 					marginRight: 50,
 					lineColor: "#aaa"
 				},
 				y: {
-					// y 축 이름
 					name: "",
 					font: "normal 11px 'Arial'",
 					fontColor: "#000",
 					marginTop: 50,
 					marginBottom: 50,
 					lineColor: "#aaa",
-					// y 축 간격
 					step: 10,
-					//값
 					maxValue: Number.MAX_VALUE,
-					// 위치: 'left'|'right'
+					// position: "left"|"right"
 					position: "left"
 				},
 				grid: {
@@ -450,13 +442,13 @@
 				}
 			},
 			item: {
-				// 투명도 0~1
+				// alpha: 0~1
 				areaAlpha: 1,
-				// 항목 지점 표시: true | false
+				// spot display: true|false
 				spotVisible: true,
-				// 항목 라벨 위치: true | false 
+				// label display: true|false 
 				labelVisible: true,
-				// 항목 값 출력: false | true
+				// value display: false|true
 				valueVisible: true 
 			}
 		}, st);

@@ -42,7 +42,7 @@
     },
     category: {
         visible: false,
-        // 렌더링 위치: "left"|"right"
+        // "left"|"right"
         position: "left",
         font: "normal 11px 'Arial'", fontColor: "#000"
     },
@@ -60,7 +60,7 @@
             lineColor: "#aaa",
             step: 10,
             maxValue: Number.MAX_VALUE,
-            // 축 위치: "left"|"right"
+            // "left"|"right"
             position: "left"
         },
         grid: {
@@ -71,6 +71,8 @@
         }
     },
     item: {
+        // 투명도: 0~1
+        areaAlpha: 1,
         // 항목 지점 표시: true|false
         spotVisible: true,
         // 그룹 라벨 표시: true|false 
@@ -100,8 +102,8 @@
                 <p>데이터의 예는 다음과 같다.</p>
                 <pre class="prettyprint">
 const raw = [
-    { group: "전체", name: "1월", value: 100, color: "#2eccfa" },
-    { group: "전체", name: "2월", value:  98, color: "#2eccfa", nameVisible: false },
+    { group: "전체", name: "1", value: 90000, color: "#2eccfa" },
+    { group: "전체", name: "2", value: 75000, color: "#2eccfa", nameVisible: false },
     // ... 데이터 생략
 ];
         </pre>
@@ -111,23 +113,20 @@ const raw = [
                 <p>가장 간단한 사용 예이다.</p>
                 <pre class="prettyprint">
 const raw = [
-    { group: "전체", name: "1", value: 100, color: "#2eccfa" },
-    { group: "전체", name: "2", value:  75, color: "#2eccfa" },
-    { group: "전체", name: "3", value:  88, color: "#2eccfa" },
+    { group: "전체", name: "1", value: 90000, color: "#2eccfa" },
+    { group: "전체", name: "2", value: 75000, color: "#2eccfa" },
+    { group: "전체", name: "3", value: 88000, color: "#2eccfa" },
     ...
-    { group: "솔루션판매", name: "1", value:  77, color: "#fe9a2e" },
-    { group: "솔루션판매", name: "2", value:  93, color: "#fe9a2e" },
-    { group: "솔루션판매", name: "3", value:  44, color: "#fe9a2e" },
+    { group: "솔루션", name: "1", value: 47000, color: "#fe9a2e" },
+    { group: "솔루션", name: "2", value: 43000, color: "#fe9a2e" },
+    { group: "솔루션", name: "3", value: 44000, color: "#fe9a2e" },
     ...
  ];
 
 Tsart.draw("#example-01", "line-area", null, raw);    
                 </pre>
                 <div id="example-01" style="width: 700px; height: 300px;"></div>
-                <p>
-                    Y 축 범위가 125까지 나타나는데, 이것은 내부 계산 방식 때문에 100 이상의 값까지 포함하기 때문이다.
-                    그리고 가로 크기가 600px, 세로가 300px인 콘테이너 크기보다 차트의 크기가 좀 작아 보이는 것은 상/하/좌/우에 기본 마진이 존재하기 때문이다. 스타일을 부여해서 좀 더 다듬어 보자.
-                </p>
+                <p>스타일을 부여해서 좀 더 다듬어 보자.</p>
                 <pre class="prettyprint">
 Tsart.draw("#example-02", "line-area", { 
     // 차트 타이틀을 넣기 위해서 20px 정도 높이를 주었다.
@@ -135,8 +134,8 @@ Tsart.draw("#example-02", "line-area", {
     title: { content: "월 수학 성적", font: "bold 18px 'Open Sans'" },
     axis: { 
         x: { name: "(월)" },
-        // Y 축 범위를 100까지 고정시켰고, 10단계로 정해서 10, 20, 30 ..., 100처럼 렌더링하도록 하였다.
-        y: { name: "(매출)", maxValue: 100, step: 10 } 
+        // Y 축 범위를 100000까지 고정시켰고, 2단계로 정해서 50000, 100000 두 단계로 렌더링하도록 하였다.
+        y: { name: "(매출)", maxValue: 100000, step: 2 } 
     },
     item: { valueVisible: true } 
 }, raw);
@@ -150,7 +149,7 @@ Tsart.draw("#example-03", "line-area", {
     title: { content: "월 수학 성적", font: "bold 18px 'Open Sans'" },
     // 범례가 보이도록 설정한다.
     category: { visible: true },
-    axis: { x: { name: "(월)" }, y: { name: "(매출)", maxValue: 100, step: 10 } },
+    axis: { x: { name: "(월)" }, y: { name: "(매출)", maxValue: 100000, step: 2 } },
     // 그룹 라벨을 출력하지 않도록 하였다.
     item: { valueVisible: true, labelVisible: false } 
 }, raw);
@@ -175,34 +174,34 @@ Tsart.draw("#example-03", "line-area", {
             { group: "전체", name: "10", value: 85000, color: "#2eccfa" },
             { group: "전체", name: "11", value: 45000, color: "#2eccfa" },
             { group: "전체", name: "12", value: 85000, color: "#2eccfa" },
-            { group: "솔루션판매", name: "1", value: 77000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "2", value: 93000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "3", value: 44000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "4", value: 66000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "5", value: 54000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "6", value: 85000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "7", value: 55000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "8", value: 92000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "9", value: 56000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "10", value: 75000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "11", value: 56000, color: "#fe9a2e" },
-            { group: "솔루션판매", name: "12", value: 75000, color: "#fe9a2e" }
+            { group: "솔루션", name: "1", value: 47000, color: "#fe9a2e" },
+            { group: "솔루션", name: "2", value: 43000, color: "#fe9a2e" },
+            { group: "솔루션", name: "3", value: 44000, color: "#fe9a2e" },
+            { group: "솔루션", name: "4", value: 56000, color: "#fe9a2e" },
+            { group: "솔루션", name: "5", value: 54000, color: "#fe9a2e" },
+            { group: "솔루션", name: "6", value: 45000, color: "#fe9a2e" },
+            { group: "솔루션", name: "7", value: 55000, color: "#fe9a2e" },
+            { group: "솔루션", name: "8", value: 42000, color: "#fe9a2e" },
+            { group: "솔루션", name: "9", value: 26000, color: "#fe9a2e" },
+            { group: "솔루션", name: "10", value: 55000, color: "#fe9a2e" },
+            { group: "솔루션", name: "11", value: 26000, color: "#fe9a2e" },
+            { group: "솔루션", name: "12", value: 45000, color: "#fe9a2e" }
         ];
 
         window.addEventListener("load", function () {
-            Tsart.draw("#explanation-01", "line-area", { axis: { y: { maxValue: 100000, step: 10 } } }, raw);                
+            Tsart.draw("#explanation-01", "line-area", { axis: { y: { maxValue: 100000, step: 2 } } }, raw);                
             Tsart.draw("#example-01", "line-area", null, raw);                
             Tsart.draw("#example-02", "line-area", { 
                 regions: { header: { h: 20 } },
                 title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
-                axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 10 } },
+                axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 2 } },
                 item: { valueVisible: true } 
             }, raw);
             Tsart.draw("#example-03", "line-area", { 
                 regions: { header: { h: 20 }, left: {w: 100 } },
                 title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
                 category: { visible: true },
-                axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 10 } },
+                axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 2 } },
                 item: { valueVisible: true, labelVisible: false } 
             }, raw);
         });
