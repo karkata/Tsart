@@ -131,7 +131,7 @@ Tsart.draw("#example-01", "line-area", null, raw);
 Tsart.draw("#example-02", "line-area", { 
     // 차트 타이틀을 넣기 위해서 20px 정도 높이를 주었다.
     regions: { header: { h: 20 } },
-    title: { content: "월 수학 성적", font: "bold 18px 'Open Sans'" },
+    title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
     axis: { 
         x: { name: "(월)" },
         // Y 축 범위를 100000까지 고정시켰고, 2단계로 정해서 50000, 100000 두 단계로 렌더링하도록 하였다.
@@ -145,8 +145,8 @@ Tsart.draw("#example-02", "line-area", {
                 <pre class="prettyprint">
 Tsart.draw("#example-03", "line-area", { 
     // 왼쪽 영역에 범례가 생성될 것이므로 left 영역이 보이도록 가로 크기를 100으로 설정했다.
-    regions: { header: { h: 20 }, left: { w: 100 } },
-    title: { content: "월 수학 성적", font: "bold 18px 'Open Sans'" },
+    regions: { header: { h: 20 }, left: { w: 80 } },
+    title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
     // 범례가 보이도록 설정한다.
     category: { visible: true },
     axis: { x: { name: "(월)" }, y: { name: "(매출)", maxValue: 100000, step: 2 } },
@@ -155,6 +155,8 @@ Tsart.draw("#example-03", "line-area", {
 }, raw);
 </pre>                
                 <div id="example-03" style="width: 700px; height: 300px;"></div>
+                <p>영역이 겹치게 보이도록 시각적 효과를 넣어보자.</p>
+                <div id="example-04" style="width: 700px; height: 300px;"></div>
             </section>
         </article>
     </div>
@@ -185,8 +187,20 @@ Tsart.draw("#example-03", "line-area", {
             { group: "솔루션", name: "9", value: 26000, color: "#fe9a2e" },
             { group: "솔루션", name: "10", value: 55000, color: "#fe9a2e" },
             { group: "솔루션", name: "11", value: 26000, color: "#fe9a2e" },
-            { group: "솔루션", name: "12", value: 45000, color: "#fe9a2e" }
-        ];
+            { group: "솔루션", name: "12", value: 45000, color: "#fe9a2e" },
+            { group: "서비스", name: "1", value: 17000, color: "#ff4081" },
+            { group: "서비스", name: "2", value: 13000, color: "#ff4081" },
+            { group: "서비스", name: "3", value: 14000, color: "#ff4081" },
+            { group: "서비스", name: "4", value: 16000, color: "#ff4081" },
+            { group: "서비스", name: "5", value: 4000, color: "#ff4081" },
+            { group: "서비스", name: "6", value: 15000, color: "#ff4081" },
+            { group: "서비스", name: "7", value: 8000, color: "#ff4081" },
+            { group: "서비스", name: "8", value: 12000, color: "#ff4081" },
+            { group: "서비스", name: "9", value: 6000, color: "#ff4081" },
+            { group: "서비스", name: "10", value: 15000, color: "#ff4081" },
+            { group: "서비스", name: "11", value: 6000, color: "#ff4081" },
+            { group: "서비스", name: "12", value: 15000, color: "#ff4081" }
+ ];
 
         window.addEventListener("load", function () {
             Tsart.draw("#explanation-01", "line-area", { axis: { y: { maxValue: 100000, step: 2 } } }, raw);                
@@ -198,13 +212,19 @@ Tsart.draw("#example-03", "line-area", {
                 item: { valueVisible: true } 
             }, raw);
             Tsart.draw("#example-03", "line-area", { 
-                regions: { header: { h: 20 }, left: {w: 100 } },
+                regions: { header: { h: 20 }, left: {w: 80 } },
                 title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
                 category: { visible: true },
                 axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 2 } },
                 item: { valueVisible: true, labelVisible: false } 
             }, raw);
-        });
+            Tsart.draw("#example-04", "line-area", { 
+                regions: { header: { h: 20 }, left: {w: 80 } },
+                title: { content: "A 그룹 매출 추이", font: "bold 18px 'Open Sans'" },
+                category: { visible: true },
+                axis: { x: { name: "(월)" }, y: { name: "(매출, 단위:만)", maxValue: 100000, step: 2 } },
+                item: { areaAlpha: 0.5, valueVisible: true, labelVisible: false } 
+            }, raw); });
     </script>
 </body>
 </html>
