@@ -259,7 +259,6 @@
 		st = Tsart.Util.extend({
 			title: { content: "", font: "bold 32px 'Arial'", fontColor: "#999999" },
 			regions: {
-				// 길이는 pixel 또는 %로 지정
 				header:	{ h: "0", bkcolor: "#fff" },
 				left:	{ w: "0", bkcolor: "#fff" },
 				right:	{ w: "0", bkcolor: "#fff" },
@@ -268,7 +267,7 @@
 			},
 			category: {
 				visible: false,
-				// 범례 위치: 'left' | 'right'
+				// "left"|"right"
 				position: "left",
 				font: "normal 11px 'Arial'",
 				fontColor: "#000"
@@ -286,11 +285,9 @@
 			item: {
 				font: "normal 11px 'Arial'",
 				fontColor: "#000",
-				// Item label position: "note" | "over"
+				// Item label position: "note"|"over"
 				textDisplayType: "note",
-				// 항목 라벨 위치: true | false 
 				labelVisible: true,
-				// 항목 값 출력: false | true
 				valueVisible: true 
 			}
 		}, st);

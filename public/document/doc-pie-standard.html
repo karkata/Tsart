@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <title>파이-차트</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Autor: Jeonghun Bu, Type: JavaScript library, Category: Chart UI, Subcategory: Pie chart"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
+    <link rel="stylesheet" type="text/css" href="./common/style/tomorrow.css"/>
+    <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
+    </head>
+<body>
+    <div class="main">
+        <article>
+            <h1>파이-차트</h1>
+            <section>
+                <h2>개요</h2>
+                <div id="explanation-01" style="width: 700px; height: 300px;"></div>
+                </pre>
+            </section>
+            <section>
+                <h2>사용법</h2>
+                <p>파이-차트를 사용하려면 tsart-pie-standard.js 파일을 참조해야 한다.</p>
+                <pre class="prettyprint">
+&lt;!-- Tsart 라이브러리 참조 --&gt;
+&lt;script src="...path.../tsart.js"&gt;&lt;/script&gt;
+&lt;script src="...path.../tsart-pie-standard.js"&gt;&lt;/script&gt;
+                </pre>
+                <h2>스타일</h2>
+                <pre class="prettyprint">
+{
+    title: {
+        content: "", 
+        font: "bold 32px 'Arial'", fontColor: "#999999" 
+    },
+    regions: {
+        header:	{ h: "0", bkcolor: "#fff" },
+        left:	{ w: "0", bkcolor: "#fff" },
+        right:	{ w: "0", bkcolor: "#fff" },
+        footer:	{ h: "0", bkcolor: "#fff" },
+        client:	{ bkcolor: "#fff" }
+    },
+    category: {
+        visible: false,
+        // "left"|"right"
+        position: "left",
+        font: "normal 11px 'Arial'", fontColor: "#000"
+    },
+    pie: {
+        marginLeft: 50, marginRight: 50, marginTop: 50, marginBottom: 50,
+        // 간격을 벌인다.
+        gapWidth: 0,
+        // highlight로 표시된 항목의 반지름
+        highlightDistance: 20,
+        // 파이의 반지름(픽셀, % 둘 다 사용 가능)
+        pieRadius: "100%",
+        // 가운데 구명의 반지름(픽셀, % 둘 다 사용 가능)
+        holeRadius: 0
+    },
+    item: {
+        font: "normal 11px 'Arial'", fontColor: "#000",
+        // 항목 표시 위치: "note"|"over"
+        textDisplayType: "note",
+        labelVisible: true,
+        valueVisible: true 
+    }
+}
+                </pre>
+                <h2>입력 데이터</h2>
+                <p>입력받는 데이터는 다음과 같은 형식을 갖는 항목(JSON 객체)을 담는 배열이다.</p>
+                <pre class="prettyprint">
+{
+    // (required) 항목의 이름이다.
+    name: "item_name",
+    // (required) 항목의 값이다.
+    value: 100,
+    // (option) 항목을 구분하는 색상으로서 #으로 시작하는 HEX 값이다.
+    // 색상이 정해지지 않은 경우, 내부에 미리 정의된 색을 사용하게 된다.
+    color: "#ff0000",
+    // true이면 항목을 좀더 눈에 띄게 렌더링한다.
+    highlight: true,
+    // (option) 항목의 내용 표시 여부 
+    visible: true
+}             
+                </pre>
+                <p>데이터의 예는 다음과 같다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { name: "A", value: 9498 },
+    { name: "B", value: 1308 , highlight: true },
+    { name: "C", value: 287, visible: false },
+    // ... 데이터 생략
+];
+        </pre>
+            </section>
+            <section>
+                <h2>예제</h2>
+                <p>가장 간단한 사용 예이다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { name: "넥슨", value: 9498 },
+    { name: "NC", value: 3588 },
+    { name: "펄어비스", value: 1308 , highlight: true },
+    { name: "컴투스", value: 1077 },
+    { name: "카카오", value: 940 },
+    ...
+ ];
+
+Tsart.draw("#example-01", "pie-standard", null, raw);    
+                </pre>
+                <div id="example-01" style="width: 700px; height: 300px;"></div>
+                <p>스타일을 부여해서 좀 더 다듬어 보자.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-02", "pie-standard", { 
+    regions: { header: { h: 20 } },
+    title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
+    // 간격을 주고, hightlight 표시가된 항목의 반지름을 100으로 설정하였다.
+    // 차트의 가운데는 전체 반지름의 반에 해당하는 크기를 비웠다.
+    pie: { gapWidth: 3, highlightDistance: 100, holeRadius: "50%" }
+}, raw);
+</pre>
+                <div id="example-02" style="width: 700px; height: 300px;"></div>
+                <p>범례를 표현해보자.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-03", "pie-standard", { 
+    regions: { header: { h: 20 }, left: {w: 80 } },
+    title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
+    // 범례가 표시되도록 했다.
+    category: { visible: true },
+    // 항목의 값만 출력하도록 하였다.
+    item: { labelVisible: false } 
+}, raw);
+</pre>
+                <div id="example-03" style="width: 700px; height: 300px;"></div>
+            </section>
+        </article>
+    </div>
+    <script src="./tsart/tsart.js"></script>
+    <script src="./tsart/tsart-pie-standard.js"></script>
+    <script>
+        const raw = [
+            { name: "넥슨", value: 9498 },
+            { name: "NC", value: 3588 },
+            { name: "펄어비스", value: 1308 , highlight: true },
+            { name: "컴투스", value: 1077 },
+            { name: "카카오", value: 940 },
+            { name: "네오위즈", value: 615 },
+            { name: "웹젠", value: 414 },
+            { name: "게임빌", value: 287, visible: false },
+            { name: "위메이드", value: 267, visible: false },
+            { name: "선데이로즈", value: 201, visible: false },
+            { name: "조이맥스", value: 72 }   
+        ];
+
+        window.addEventListener("load", function () {
+            Tsart.draw("#explanation-01", "pie-standard", { axis: { y: { maxValue: 100000, step: 2 } } }, raw);                
+            Tsart.draw("#example-01", "pie-standard", null, raw);                
+            Tsart.draw("#example-02", "pie-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
+                pie: { gapWidth: 3, highlightDistance: 100, holeRadius: "50%" }
+            }, raw);
+            Tsart.draw("#example-03", "pie-standard", { 
+                regions: { header: { h: 20 }, left: {w: 80 } },
+                title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
+                category: { visible: true },
+                item: { labelVisible: false } 
+            }, raw);
+        });
+    </script>
+</body>
+</html>
