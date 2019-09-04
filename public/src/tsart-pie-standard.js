@@ -184,12 +184,13 @@
 			const cxy = { x: area.c, y: area.m };
 			const radius = Tsart.Util.toPixel(opt.pie.pieRadius, parseInt(Math.min(area.w, area.h) / 2, 10));
 			const holeRadius = Tsart.Util.toPixel(opt.pie.holeRadius, radius);
+            const highlightDistance = Tsart.Util.toPixel(opt.pie.highlightDistance, parseInt(Math.min(area.w, area.h) / 2, 10));
 			
 			let cradius = 0, cradian = 0, oradian = -(Math.PI / 2), pt = null;
 			for (let t of this.items) {
 				cradian = oradian + Tsart.Util.toRadian(360 * (t.value / this.maxt));
 
-				cradius = t.highlight ? radius + opt.pie.highlightDistance : radius;
+				cradius = t.highlight ? radius + highlightDistance : radius;
 
 				ctx.fillStyle = t.color;
 				ctx.beginPath();
