@@ -116,7 +116,7 @@ Tsart.draw("#example-02", "pie-standard", {
     title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
     // 간격을 주고, hightlight 표시가된 항목의 반지름을 100으로 설정하였다.
     // 차트의 가운데는 전체 반지름의 반에 해당하는 크기를 비웠다.
-    pie: { gapWidth: 3, highlightDistance: 100, holeRadius: "50%" }
+    pie: { gapWidth: 3, highlightDistance: "50%", holeRadius: "50%" }
 }, raw);
 </pre>
                 <div id="example-02" style="width: 700px; height: 300px;"></div>
@@ -156,7 +156,7 @@ Tsart.draw("#example-03", "pie-standard", {
             Tsart.draw("#explanation-01", "pie-standard", { axis: { y: { maxValue: 100000, step: 2 } } }, raw);                
             Tsart.draw("#example-01", "pie-standard", null, raw);                
             Tsart.draw("#example-02", "pie-standard", { 
-                regions: { header: { h: 20 }, client: { bkcolor: "#ff00ff"} },
+                regions: { header: { h: 20 } },
                 title: { content: "2019년 1분기 게임사 매출 순위", font: "bold 18px 'Open Sans'" },
                 pie: { gapWidth: 3, highlightDistance: "50%", holeRadius: "50%" }
             }, raw);
