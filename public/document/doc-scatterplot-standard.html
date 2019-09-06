@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <title>선점도-차트</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Autor: Jeonghun Bu, Type: JavaScript library, Category: Chart UI, Subcategory: Pie chart"/>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true"></script>
+    <link rel="stylesheet" type="text/css" href="./common/style/tomorrow.css"/>
+    <link rel="stylesheet" type="text/css" href="./common/style/default.css"/>
+    </head>
+<body>
+    <div class="main">
+        <article>
+            <h1>선점도-차트</h1>
+            <section>
+                <h2>개요</h2>
+                <div id="explanation-01" style="width: 700px; height: 300px;"></div>
+                </pre>
+            </section>
+            <section>
+                <h2>사용법</h2>
+                <p>선점도-차트를 사용하려면 tsart-scatterplot-standard.js 파일을 참조해야 한다.</p>
+                <pre class="prettyprint">
+&lt;!-- Tsart 라이브러리 참조 --&gt;
+&lt;script src="...path.../tsart.js"&gt;&lt;/script&gt;
+&lt;script src="...path.../tsart-scatterplot-standard.js"&gt;&lt;/script&gt;
+                </pre>
+                <h2>스타일</h2>
+                <pre class="prettyprint">
+{
+    title: { content: "", font: "bold 32px 'Arial'", fontColor: "#999999" },
+    regions: {
+        header:	{ h: "0", bkcolor: "#fff" },
+        left:	{ w: "0", bkcolor: "#fff" },
+        right:	{ w: "0", bkcolor: "#fff" },
+        footer:	{ h: "0", bkcolor: "#fff" },
+        client:	{ bkcolor: "#fff" }
+    },
+    category: {
+        visible: false,
+        // 'left'|'right'
+        position: "left",
+        font: "normal 11px 'Arial'", fontColor: "#000"
+    },
+    axis: {
+        x: {
+            name: "",
+            font: "normal 11px 'Arial'", fontColor: "#000",
+            marginLeft: 50, marginRight: 50,
+            lineColor: "#aaa",
+            step: 10,
+            minValue: 0, maxValue: Number.MAX_VALUE
+        },
+        y: {
+            name: "",
+            font: "normal 11px 'Arial'", fontColor: "#000",
+            marginTop: 50, marginBottom: 50,
+            lineColor: "#aaa",
+            step: 10,
+            minValue: 0, maxValue: Number.MAX_VALUE
+        },
+        grid: {
+            lineColor: "#ddd",
+            visible: true
+        }
+    },
+    item: {
+        size: 3,
+        useWeight: false,
+        bubbleMinRadius: 0, bubbleMaxRadius: 10 
+    }
+}                </pre>
+                <h2>입력 데이터</h2>
+                <p>입력받는 데이터는 다음과 같은 형식을 갖는 항목(JSON 객체)을 담는 배열이다.</p>
+                <pre class="prettyprint">
+{
+    // (required) X 축의 값
+    x: "item_name",
+    // (required) Y 축의 값
+    y: 100,
+    // (required) 가중치
+    w: 5,
+    // (required) 그룹 이름
+    group: "Korea",
+    // (option) 그룹을 구분하는 색상으로서 #으로 시작하는 HEX 값
+    color: "#ff0000"
+}             
+                </pre>
+                <p>데이터의 예는 다음과 같다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { x: 1, y: 25, w: 1,  group: "Korea", color: "#A901DB" },
+    { x: 1, y: 36, w: 5,  group: "Korea", color: "#A901DB" },
+    { x: 1, y: 52, w: 5,  group: "Korea", color: "#A901DB" },
+    // ... 데이터 생략
+];
+        </pre>
+            </section>
+            <section>
+                <h2>예제</h2>
+                <p>가장 간단한 사용 예이다.</p>
+                <pre class="prettyprint">
+const raw = [
+    { x: 1, y: 25, w: 1,  group: "Korea", color: "#A901DB" },
+    { x: 1, y: 36, w: 5,  group: "Korea", color: "#A901DB" },
+    { x: 5, y: 80, w: 6,  group: "Korea", color: "#A901DB" },
+    { x: 1, y: 15, w: 5,  group: "Japan", color: "#FE2E2E" },
+    { x: 2, y: 46, w: 12, group: "Japan", color: "#FE2E2E" },
+    { x: 2, y: 65, w: 5,  group: "Japan", color: "#FE2E2E" },
+...
+ ];
+
+Tsart.draw("#example-01", "scatterplot-standard", null, raw);    
+                </pre>
+                <div id="example-01" style="width: 700px; height: 300px;"></div>
+                <p>스타일을 부여해서 좀 더 다듬어 보자.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-02", "scatterplot-standard", { 
+    regions: { header: { h: 20 } },
+    title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+    axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } }
+}, raw);
+</pre>
+                <div id="example-02" style="width: 700px; height: 300px;"></div>
+                <p>범례를 표현해보자.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-03", "scatterplot-standard", { 
+    regions: { header: { h: 20 }, left: {w: 80 } },
+    title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+    category: { visible: true },
+    axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } }
+}, raw);
+</pre>
+                <div id="example-03" style="width: 700px; height: 300px;"></div>
+                <p>부여된 가중치로부터 표현을 다르게 할 수 있다.</p>
+                <pre class="prettyprint">
+Tsart.draw("#example-04", "scatterplot-standard", { 
+    regions: { header: { h: 20 }, left: {w: 80 } },
+    title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+    axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } },
+    item: { useWeight: true, bubbleMaxRadius: 20 } 
+}, raw);
+</pre>
+                <div id="example-04" style="width: 700px; height: 300px;"></div>
+            </section>
+        </article>
+    </div>
+    <script src="./tsart/tsart.js"></script>
+    <script src="./tsart/tsart-scatterplot-standard.js"></script>
+    <script>
+        const raw = [
+            { x: 1, y: 25, w: 1,  group: "Korea", color: "#A901DB" },
+            { x: 1, y: 36, w: 5,  group: "Korea", color: "#A901DB" },
+            { x: 1, y: 52, w: 5,  group: "Korea", color: "#A901DB" },
+            { x: 2, y: 15, w: 8,  group: "Korea", color: "#A901DB" },
+            { x: 3, y: 25, w: 4,  group: "Korea", color: "#A901DB" },
+            { x: 3, y: 22, w: 5,  group: "Korea", color: "#A901DB" },
+            { x: 4, y: 34, w: 1,  group: "Korea", color: "#A901DB" },
+            { x: 5, y: 67, w: 5,  group: "Korea", color: "#A901DB" },
+            { x: 5, y: 75, w: 5,  group: "Korea", color: "#A901DB" },
+            { x: 5, y: 80, w: 6,  group: "Korea", color: "#A901DB" },
+            { x: 1, y: 15, w: 5,  group: "Japan", color: "#FE2E2E" },
+            { x: 2, y: 46, w: 12, group: "Japan", color: "#FE2E2E" },
+            { x: 2, y: 22, w: 5,  group: "Japan", color: "#FE2E2E" },
+            { x: 2, y: 65, w: 5,  group: "Japan", color: "#FE2E2E" },
+            { x: 3, y: 85, w: 5,  group: "Japan", color: "#FE2E2E" },
+            { x: 3, y: 11, w: 3,  group: "Japan", color: "#FE2E2E" },
+            { x: 3, y: 67, w: 1,  group: "Japan", color: "#FE2E2E" },
+            { x: 4, y: 98, w: 1,  group: "Japan", color: "#FE2E2E" },
+            { x: 5, y: 24, w: 2,  group: "Japan", color: "#FE2E2E" },
+            { x: 5, y: 72, w: 9,  group: "Japan", color: "#FE2E2E" }
+        ];
+
+        window.addEventListener("load", function () {
+            Tsart.draw("#explanation-01", "scatterplot-standard", { axis: { y: { maxValue: 100, step: 5 } } }, raw);                
+            Tsart.draw("#example-01", "scatterplot-standard", null, raw);                
+            Tsart.draw("#example-02", "scatterplot-standard", { 
+                regions: { header: { h: 20 } },
+                title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+                axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } }
+            }, raw);
+            Tsart.draw("#example-03", "scatterplot-standard", { 
+                regions: { header: { h: 20 }, left: {w: 80 } },
+                title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+                category: { visible: true },
+                axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } }
+            }, raw);
+            Tsart.draw("#example-04", "scatterplot-standard", { 
+                regions: { header: { h: 20 }, left: {w: 80 } },
+                title: { content: "Scatterplot demonstration", font: "bold 18px 'Open Sans'" },
+                axis: { x: { maxValue: 6, step: 6 }, y: { maxValue: 100, step: 5 } },
+                item: { useWeight: true, bubbleMaxRadius: 20 } 
+            }, raw);
+        });
+    </script>
+</body>
+</html>
