@@ -5,8 +5,8 @@ const stripdebug = require("gulp-strip-debug");
 
 let paths = {
     js: "public/src",
-    example: "public/example",
-    docs: "public/document",
+    example: "test",
+    docs: "docs",
     dist: "public/dist"
 };
 
@@ -40,27 +40,27 @@ function minify(cb) {
 }
 
 function copySourceForTest(cb) {
-    gulp.src(paths.js + "/*.js").pipe(gulp.dest("/var/www/html/tsart/example/js/"));
+    gulp.src(paths.js + "/*.js").pipe(gulp.dest("/var/www/html/tsart/test/js/"));
     cb();
 }
 
 function copyExampleForTest(cb) {
-    gulp.src(paths.example + "/*.html").pipe(gulp.dest("/var/www/html/tsart/example/"));
+    gulp.src(paths.example + "/*.html").pipe(gulp.dest("/var/www/html/tsart/test/"));
     cb();
 }
 
 function deployDocument(cb) {
-    gulp.src(paths.docs + "/**").pipe(gulp.dest("/var/www/html/tsart/document/"));
+    gulp.src(paths.docs + "/**").pipe(gulp.dest("/var/www/html/tsart/docs/"));
     cb();
 }
 
 function deploy(cb) {
-    gulp.src(paths.js + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
+    gulp.src(paths.js + "/*").pipe(gulp.dest("/var/www/html/tsart/docs/tsart/")); 
     cb();
 }
 
 function deployMinified(cb) {
-    gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/document/tsart/")); 
+    gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/docs/tsart/")); 
     cb();
 }
 
