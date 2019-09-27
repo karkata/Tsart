@@ -1,6 +1,5 @@
 # Tsart
-
-![Apache 2](https://img.shields.io/hexpm/l/:packageName)
+![Apache 2](https://img.shields.io/badge/License-Apache_202.0-blue)
 
 ES6 JavaScript Chart Library
 
