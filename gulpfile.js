@@ -2,30 +2,22 @@ const gulp = require("gulp");
 const eslint = require("gulp-eslint");
 const terser = require("gulp-terser");
 const stripdebug = require("gulp-strip-debug");
+const fs = require("fs");
+
+const version = "1.0.0";
+const dir = "public/dist/" + version + "/";
 
 let paths = {
     js: "public/src",
     example: "test",
     docs: "docs",
-    dist: "public/dist"
+    dist: dir 
 };
 
 function syntax(cb) {
     gulp.src(paths.js + "/*.js")
         .pipe(stripdebug())
         .pipe(eslint({ envs: [ "browser" ] }))
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-    cb();
-}
-
-function syntaxForTest(cb) {
-    gulp.src(paths.js + "/*.js")
-        .pipe(eslint({ 
-            envs: [ "browser" ], 
-            // console 사용된 코드를 무시한다.
-            rules: { "no-console": "off" } 
-        }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
     cb();
@@ -39,33 +31,42 @@ function minify(cb) {
     cb();
 }
 
-function copySourceForTest(cb) {
-    gulp.src(paths.js + "/*.js").pipe(gulp.dest("/var/www/html/tsart/test/js/"));
-    cb();
-}
-
-function copyExampleForTest(cb) {
-    gulp.src(paths.example + "/*.html").pipe(gulp.dest("/var/www/html/tsart/test/"));
-    cb();
-}
-
 function deployDocument(cb) {
+    gulp.src(paths.dist + "/*.js")
+        .pipe(gulp.dest(paths.docs + "/tsart/"))
+    cb();
+}
+
+function testDocumentAtLocal(cb) {
     gulp.src(paths.docs + "/**").pipe(gulp.dest("/var/www/html/tsart/docs/"));
+    gulp.src(paths.js + "/*.js")
+        .pipe(eslint({ 
+            envs: [ "browser" ], 
+            rules: { "no-console": "off" } 
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
+        .pipe(gulp.dest("/var/www/html/tsart/docs/tsart/"));
     cb();
 }
 
-function deploy(cb) {
-    gulp.src(paths.js + "/*").pipe(gulp.dest("/var/www/html/tsart/docs/tsart/")); 
+function testExampleAtLocal(cb) {
+    gulp.src(paths.example + "/**").pipe(gulp.dest("/var/www/html/tsart/test/"));
+    gulp.src(paths.js + "/*.js")
+        .pipe(eslint({ 
+            envs: [ "browser" ], 
+            rules: { "no-console": "off" } 
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError())
+        .pipe(gulp.dest("/var/www/html/tsart/test/js/"));
     cb();
 }
-
-function deployMinified(cb) {
-    gulp.src(paths.dist + "/*").pipe(gulp.dest("/var/www/html/tsart/docs/tsart/")); 
-    cb();
-}
-
+    
+// Build and make documents
+exports.default = gulp.series(syntax, minify, deployDocument);
+// Only build
 exports.build = gulp.series(syntax, minify);
-exports.puredocs = gulp.series(deploy, deployDocument);
-exports.docs = gulp.series(syntax, minify, deployMinified, deployDocument);
-exports.onlydocs = gulp.series(deployDocument);
-exports.default = gulp.series(syntaxForTest, copySourceForTest, copyExampleForTest);
+// Test
+exports.testdoc = gulp.series(testDocumentAtLocal);
+exports.testexam = gulp.series(testExampleAtLocal);
