@@ -4,7 +4,7 @@ const terser = require("gulp-terser");
 const stripdebug = require("gulp-strip-debug");
 const fs = require("fs");
 
-const version = "1.0.0";
+const version = "1.0.1";
 const dir = "public/dist/" + version + "/";
 
 let paths = {
