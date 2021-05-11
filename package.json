@@ -17,5 +17,18 @@
     "gulp-terser": "^1.4.1",
     "gulp-uglify": "^3.0.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karkata/Tsart.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/karkata/Tsart/issues"
+  },
+  "homepage": "https://github.com/karkata/Tsart#readme"
 }
