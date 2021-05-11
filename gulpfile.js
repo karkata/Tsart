@@ -5,13 +5,14 @@ const stripdebug = require("gulp-strip-debug");
 const fs = require("fs");
 
 const version = "1.0.1";
-const dir = "public/dist/" + version + "/";
+const mountDir = "/mnt/c/docker_file_sharing"
 
 let paths = {
     js: "public/src",
     example: "test",
     docs: "docs",
-    dist: dir 
+    dist: "public/dist/" + version + "/"
+ 
 };
 
 function syntax(cb) {
@@ -38,7 +39,8 @@ function deployDocument(cb) {
 }
 
 function testDocumentAtLocal(cb) {
-    gulp.src(paths.docs + "/**").pipe(gulp.dest("/var/www/html/tsart/docs/"));
+    let target = mountDir + "/www/html/tsart/docs/";
+    gulp.src(paths.docs + "/**").pipe(gulp.dest(target));
     gulp.src(paths.js + "/*.js")
         .pipe(eslint({ 
             envs: [ "browser" ], 
@@ -46,12 +48,13 @@ function testDocumentAtLocal(cb) {
         }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
-        .pipe(gulp.dest("/var/www/html/tsart/docs/tsart/"));
+        .pipe(gulp.dest(target + "tsart/"));
     cb();
 }
 
 function testExampleAtLocal(cb) {
-    gulp.src(paths.example + "/**").pipe(gulp.dest("/var/www/html/tsart/test/"));
+    let target = mountDir + "/www/html/tsart/exam/";
+    gulp.src(paths.example + "/**").pipe(gulp.dest(target));
     gulp.src(paths.js + "/*.js")
         .pipe(eslint({ 
             envs: [ "browser" ], 
@@ -59,7 +62,7 @@ function testExampleAtLocal(cb) {
         }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
-        .pipe(gulp.dest("/var/www/html/tsart/test/js/"));
+        .pipe(gulp.dest(target + "js/"));
     cb();
 }
     
