@@ -5,6 +5,6 @@ node_modules
 # system files 
 .DS_Store
 .thumb
-.code-workspace
+*.code-workspace
 
 # project folders
